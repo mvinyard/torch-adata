@@ -42,4 +42,4 @@ class BaseTorchAnnDataset(Dataset):
 
     def __getitem__(self, idx):
         """fetches a cell from the dataset, given a cell idx"""
-        return self._X[idx], self._obs.loc[idx]
+        return {"X":self._X[idx], "obs":self._obs.loc[idx]}

@@ -26,4 +26,4 @@ class TimeResolvedAnnDataset(GroupedAnnDataset):
         X0 = X_dict[self._t_init]
         t = torch.Tensor(list(X_dict.keys()))
 
-        return X0, X_dict, t, obs
+        return {"X0":X0, "X_dict":X_dict, "t":t, "obs":obs}

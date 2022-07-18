@@ -18,11 +18,6 @@ from ._BaseTorchAnnDataset import BaseTorchAnnDataset
 def _index_subset_group(df, X):
     return X[df.index]
 
-
-# def _grouped_getitem(X, obs, groupby):
-#     return obs.groupby(groupby).apply(_index_subset_group, X).to_dict()
-
-
 class GroupedAnnDataset(BaseTorchAnnDataset):
     def __init__(self, adata, groupby, use_key=None):
         super(GroupedAnnDataset, self).__init__(adata, use_key)
@@ -33,6 +28,10 @@ class GroupedAnnDataset(BaseTorchAnnDataset):
         return obs.groupby(groupby).apply(_index_subset_group, X).to_dict()
 
     def __getitem__(self, idx):
+        
         """keys: groups (e.g., t); values: torch.Tensor([X])"""
+        
         X, obs = self._X[idx], self._obs.loc[idx].reset_index(drop=True)
-        return self._grouped_getitem(X, obs, self._groupby)
+        X_dict = self._grouped_getitem(X, obs, self._groupby)
+        
+        return {"X_dict":X_dict, "obs":obs}
