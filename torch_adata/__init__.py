@@ -5,4 +5,4 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 from ._BaseTorchAnnDataset import BaseTorchAnnDataset as AnnDataset
 from ._GroupedAnnDataset import GroupedAnnDataset as GroupedAnnDataset
-from ._TimeResolvedAnnDataset import _TimeResolvedAnnDataset as TimeResolvedAnnDataset
+from ._TimeResolvedAnnDataset import TimeResolvedAnnDataset as TimeResolvedAnnDataset
