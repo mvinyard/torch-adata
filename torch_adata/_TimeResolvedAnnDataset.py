@@ -4,26 +4,15 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages #
-# --------------- #
-import torch
+# import local dependencies #
+# ------------------------- #
+from ._functions._use_X import _use_X
+from ._AnnDataset import AnnDataset
+from ._functions._pad_time_resolved_dataset import _pad_time_resolved_dataset
 
 
-from ._GroupedAnnDataset import GroupedAnnDataset
+class TimeResolvedAnnDataset(AnnDataset):
+    def __init__(self, adata, use_key="X_pca"):
+        super(TimeResolvedAnnDataset, self).__init__(adata, use_key)
 
-class TimeResolvedAnnDataset(GroupedAnnDataset):
-    def __init__(self, adata, time_key="Time point", use_key=None):
-        super(TimeResolvedAnnDataset, self).__init__(adata, time_key, use_key)
-
-        self._time_key = time_key
-        self._t_init = min(adata.obs[time_key])
-
-    def __getitem__(self, idx):
-        """keys: groups (e.g., t); values: torch.Tensor([X])"""
-        X, obs = self._X[idx], self._obs.loc[idx].reset_index(drop=True)
-
-        X_dict = self._grouped_getitem(X, obs, self._groupby)
-        X0 = X_dict[self._t_init]
-        t = torch.Tensor(list(X_dict.keys()))
-
-        return {"X0":X0, "X_dict":X_dict, "t":t, "obs":obs}
+        self.X = _pad_time_resolved_dataset(self._adata)
