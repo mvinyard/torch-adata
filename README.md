@@ -1,7 +1,8 @@
 # ![torch-adata-logo](/docs/imgs/torch-adata.logo.large.svg)
 
-Create pytorch Datasets from AnnData
+### *Create pytorch Datasets from* [`AnnData`](https://anndata.readthedocs.io/en/latest/)
 
+<a href="https://github.com/mvinyard/torch-adata/"><img src="/docs/imgs/torch-adata.concept_overview.svg" alt="torch-adata-concept-overview" height="250" /></a>
 ## Example use of the base class
 
 The base class, `AnnDataset` is a subclass of the widely-used `torch.utils.data.Dataset`. 
