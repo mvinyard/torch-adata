@@ -1,4 +1,5 @@
-# torch-adata
+# ![torch-adata-logo](/docs/imgs/torch-adata.logo.large.svg)
+
 Create pytorch Datasets from AnnData
 
 ## Example use of the base class
