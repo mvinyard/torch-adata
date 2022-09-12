@@ -8,11 +8,11 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 import torch
 import numpy
 
+from ._fetch_labels_from_obs import _fetch_labels_from_obs
 
 # fetch data (X) ---------------------------------------------------------
 def _is_numpy_array(x):
     return x.__class__ is numpy.ndarray
-
 
 def _toarray(x):
     if _is_numpy_array(x):
@@ -37,7 +37,7 @@ def _use_X(adata, use_key="X"):
         type: anndata._core.anndata.AnnData
 
     use_key
-        "X" or key in adata.obsm_keys()
+        "X" or key in adata.obsm_keys(), adata.obs_keys(),
         type: str
         default: "X"
 
@@ -53,6 +53,9 @@ def _use_X(adata, use_key="X"):
 
     elif use_key in adata.obsm_keys():
         return _tensorize(adata.obsm[use_key])
+    
+    elif use_key in adata.obs_keys():
+        return _fetch_labels_from_obs(adata, use_key)
 
     else:
         print("No suitable array found for dataset...")
