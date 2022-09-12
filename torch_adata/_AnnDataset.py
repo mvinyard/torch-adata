@@ -4,26 +4,25 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages #
-# --------------- #
+# import packages: -------------------------------------------------------
 from torch.utils.data import Dataset
 
 
-# import local dependencies #
-# ------------------------- #
-from ._functions._use_X import _use_X
+# import local dependencies: ---------------------------------------------
+from . import _functions as funcs
 
 
+# main module class: -----------------------------------------------------
 class AnnDataset(Dataset):
     """Base class"""
-    def __init__(self, adata=None, data_key="X_pca"):
+        
+    def __init__(self, adata, use_key="X", obs_key=None):
 
         self._adata = adata
-        self._data_key = data_key
-        self.X = _use_X(self._adata, self._data_key)
-
+        funcs.do_setup(self, use_key, obs_key)
+        
     def __len__(self):
-        return self.X.shape[1]
-
+        return self._len
+    
     def __getitem__(self, idx):
-        return self.X[:, idx], self.W[:, idx], self.F[idx]
+        return self._return_item(self, idx)

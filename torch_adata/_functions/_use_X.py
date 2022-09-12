@@ -4,18 +4,55 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages #
-# --------------- #
+# import packages --------------------------------------------------------
 import torch
+import numpy
 
 
-def _use_X(adata, use_key="X_pca"):
+# fetch data (X) ---------------------------------------------------------
+def _is_numpy_array(x):
+    return x.__class__ is numpy.ndarray
+
+
+def _toarray(x):
+    if _is_numpy_array(x):
+        return x
+    else:
+        return x.toarray()
+
+
+def _tensorize(x):
+    return torch.Tensor(_toarray(x))
+
+
+def _use_X(adata, use_key="X"):
+    
+    """
+    Return data from AnnData as Tensor.
+
+    Parameters:
+    -----------
+    adata
+        AnnData object
+        type: anndata._core.anndata.AnnData
+
+    use_key
+        "X" or key in adata.obsm_keys()
+        type: str
+        default: "X"
+
+    Returns:
+    --------
+    X
+        Formatted data matrix.
+        type: torch.Tensor
+    """
 
     if use_key == "X":
-        return torch.Tensor(adata.X.toarray())
+        return _tensorize(adata.X)
 
     elif use_key in adata.obsm_keys():
-        return torch.Tensor(adata.obsm[use_key])
+        return _tensorize(adata.obsm[use_key])
 
     else:
         print("No suitable array found for dataset...")
