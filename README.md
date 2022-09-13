@@ -3,6 +3,20 @@
 ### *Create pytorch Datasets from* [`AnnData`](https://anndata.readthedocs.io/en/latest/)
 
 <a href="https://github.com/mvinyard/torch-adata/"><img src="/docs/imgs/torch-adata.concept_overview.svg" alt="torch-adata-concept-overview" height="250" /></a>
+
+## Installation
+
+Install from PYPI:
+```BASH
+pip install torch-adata
+```
+
+Install the developer version:
+```BASH
+git clone https://github.com/mvinyard/torch-adata.git; cd torch-adata;
+pip install -e .
+```
+
 ## Example use of the base class
 
 The base class, `AnnDataset` is a subclass of the widely-used `torch.utils.data.Dataset`. 
@@ -32,17 +46,4 @@ import torch_adata as ta
 
 adata = a.read_h5ad("/path/to/data.h5ad")
 dataset = torch_adata.TimeResolvedAnnDataset(adata, time_key="Time point")
-```
-
-## Installation
-
-Install from PYPI:
-```BASH
-pip install torch-adata
-```
-
-Install the developer version:
-```BASH
-git clone https://github.com/mvinyard/torch-adata.git; cd torch-adata;
-pip install -e .
 ```
