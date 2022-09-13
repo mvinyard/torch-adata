@@ -1,5 +1,9 @@
 # ![torch-adata-logo](/docs/imgs/torch-adata.logo.large.svg)
 
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/torch-adata.svg)](https://pypi.python.org/pypi/torch-adata/)
+[![PyPI version](https://badge.fury.io/py/torch-adata.svg)](https://badge.fury.io/py/torch-adata)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 ### *Create pytorch Datasets from* [`AnnData`](https://anndata.readthedocs.io/en/latest/)
 
 <a href="https://github.com/mvinyard/torch-adata/"><img src="/docs/imgs/torch-adata.concept_overview.svg" alt="torch-adata-concept-overview" height="250" /></a>
