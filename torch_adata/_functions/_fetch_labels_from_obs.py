@@ -14,11 +14,13 @@ def _one_hot_encode_labels(adata, obs_key):
     """first format for one-hot encoding then actually do the OHE"""
 
     X = adata.obs[obs_key].values.to_numpy().reshape(-1, 1)
-    return OneHotEncoder().fit_transform(X).toarray()
+    OneHot = OneHotEncoder()
+    X_one_hot = OneHot.fit_transform(X).toarray()
+    return OneHot, torch.Tensor(X_one_hot)
 
 
 # fetch labels from obs (y) ----------------------------------------------
-def _fetch_labels_from_obs(adata, obs_key):
+def _fetch_labels_from_obs(adata, obs_key, return_obj=True):
     
     """
     Fetch data labels (y) from adata.obs[obs_key]
@@ -43,4 +45,12 @@ def _fetch_labels_from_obs(adata, obs_key):
     (1) Creating this function as a wrapper of OHE because I'm not sure if
         there may be other uses beyond OHE
     """
-    return torch.Tensor(_one_hot_encode_labels(adata, obs_key))
+    
+    
+    
+    OneHot, X_one_hot = _one_hot_encode_labels(adata, obs_key)
+    
+    if return_obj:
+        return OneHot, X_one_hot
+    else:
+        return X_one_hot

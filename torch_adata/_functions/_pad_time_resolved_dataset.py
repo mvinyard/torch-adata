@@ -20,7 +20,7 @@ def _format_sampled(df, adata, use_key):
     if use_key in adata.obsm_keys():
         return torch.Tensor(adata[df.index].obsm[use_key])
     elif use_key in adata.obs_keys():
-        return _fetch_labels_from_obs(adata[df.index], use_key)
+        return _fetch_labels_from_obs(adata[df.index], use_key, return_obj=False)
     elif use_key == "X":
         return _tensorize(adata.X)
     else:

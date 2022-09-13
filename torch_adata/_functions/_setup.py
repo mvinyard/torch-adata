@@ -29,7 +29,7 @@ def _setup_y(self, obs_key):
 
     self._obs_key = obs_key
     if self._obs_key:
-        self.y = _fetch_labels_from_obs(self._adata, self._obs_key)
+        self._OneHot, self.y = _fetch_labels_from_obs(self._adata, self._obs_key)
         self._return_item = _return_X_and_y
         self._y_len = self.y.shape[0]
         assert self._X_len == self._y_len,"X and y do not have the same shape"
