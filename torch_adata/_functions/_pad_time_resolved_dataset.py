@@ -68,7 +68,7 @@ def _pad_cells(adata, time_key):
 def _apply_padding(data_dict, pad_cell_dict, adata, use_key):
     for key in data_dict.keys():
         if key in pad_cell_dict.keys():
-            data_pad = _use_X(adata[pad_cell_dict[key]], use_key)
+            data_pad = _use_X(adata[pad_cell_dict[key]], use_key, return_obj=False)
             data_dict[key] = torch.vstack([data_dict[key], data_pad])
     return torch.stack(list(data_dict.values()))
 

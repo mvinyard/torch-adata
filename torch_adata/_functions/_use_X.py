@@ -25,7 +25,7 @@ def _tensorize(x):
     return torch.Tensor(_toarray(x))
 
 
-def _use_X(adata, use_key="X"):
+def _use_X(adata, use_key="X", return_obj=False):
     
     """
     Return data from AnnData as Tensor.
@@ -55,7 +55,7 @@ def _use_X(adata, use_key="X"):
         return _tensorize(adata.obsm[use_key])
     
     elif use_key in adata.obs_keys():
-        return _fetch_labels_from_obs(adata, use_key)
+        return _fetch_labels_from_obs(adata, use_key, return_obj)
 
     else:
         print("No suitable array found for dataset...")

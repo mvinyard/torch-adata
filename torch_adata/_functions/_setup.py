@@ -51,9 +51,15 @@ def _return_X_and_y_time_resolved(self, idx):
 def _setup_time(self, time_key):
 
     self._time_key = time_key
-    self.X, self.y = _pad_time_resolved_dataset(
-        self._adata, self._time_key, self._use_key, self._obs_key
-    )
+    
+    if self._obs_key:
+        self.X, self.y = _pad_time_resolved_dataset(
+            self._adata, self._time_key, self._use_key, self._obs_key
+        )
+    else:
+        self.X = _pad_time_resolved_dataset(
+            self._adata, self._time_key, self._use_key, self._obs_key
+        )
     self._X_len = self.X.shape[1]
     
     if self._obs_key:
