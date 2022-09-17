@@ -16,10 +16,10 @@ from . import _functions as funcs
 class AnnDataset(Dataset):
     """Base class"""
         
-    def __init__(self, adata, use_key="X", obs_key=None):
+    def __init__(self, adata, use_key="X", obs_key=None, one_hot_encode_y=False):
 
         self._adata = adata
-        funcs.do_setup(self, use_key, obs_key)
+        funcs.do_setup(self, use_key, obs_key, one_hot_encode_y)
         
     def __len__(self):
         return self._len

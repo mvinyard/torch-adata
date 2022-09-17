@@ -10,26 +10,25 @@ import torch
 
 
 # import local dependencies: ---------------------------------------------
-from ._use_X import _use_X, _tensorize
-from ._fetch_labels_from_obs import _fetch_labels_from_obs
+from ._fetch_data import _fetch_y_from_obs, _use_X, _tensorize
 
 
 # supporting functions: sampling -----------------------------------------
-def _format_sampled(df, adata, use_key):
+def _format_sampled(df, adata, use_key, onehot_encode_y):
     
     if use_key in adata.obsm_keys():
         return torch.Tensor(adata[df.index].obsm[use_key])
     elif use_key in adata.obs_keys():
-        return _fetch_labels_from_obs(adata[df.index], use_key, return_obj=False)
+        return _fetch_y_from_obs(adata[df.index], use_key, onehot_encode_y, return_obj=False)
     elif use_key == "X":
         return _tensorize(adata.X)
     else:
         print("Must provide a valid key")
         
-def _sample_dataset(adata, time_key, use_key):
+def _sample_dataset(adata, time_key, use_key, onehot_encode_y):
 
     grouped = adata.obs.groupby(time_key)
-    X_dict = grouped.apply(_format_sampled, adata, use_key).to_dict()
+    X_dict = grouped.apply(_format_sampled, adata, use_key, onehot_encode_y).to_dict()
     return X_dict
 
 
@@ -65,27 +64,26 @@ def _pad_cells(adata, time_key):
 
     return pad_dict
 
-def _apply_padding(data_dict, pad_cell_dict, adata, use_key):
+def _apply_padding(data_dict, pad_cell_dict, adata, use_key, onehot_encode_y):
     for key in data_dict.keys():
         if key in pad_cell_dict.keys():
-            data_pad = _use_X(adata[pad_cell_dict[key]], use_key, return_obj=False)
+            data_pad = _use_X(adata[pad_cell_dict[key]], use_key, onehot_encode_y, return_obj=False)
             data_dict[key] = torch.vstack([data_dict[key], data_pad])
     return torch.stack(list(data_dict.values()))
 
 
 # Main module function: --------------------------------------------------
-def _pad_time_resolved_dataset(adata, time_key, use_key, obs_key):
+def _pad_time_resolved_dataset(adata, time_key, use_key, obs_key, onehot_encode_y=False):
 
     """samples dataset for padding"""
     
-    pad_cell_dict = _pad_cells(adata, time_key)
-    
-    X_dict = _sample_dataset(adata, time_key, use_key)    
-    X = _apply_padding(X_dict, pad_cell_dict, adata, use_key)
-    
+    pad_cell_dict = _pad_cells(adata, time_key)    
+    X_dict = _sample_dataset(adata, time_key, use_key, onehot_encode_y=False)    
+    X = _apply_padding(X_dict, pad_cell_dict, adata, use_key, onehot_encode_y=False)
+
     if obs_key:
-        y_dict = _sample_dataset(adata, time_key, obs_key)
-        y = _apply_padding(y_dict, pad_cell_dict, adata, obs_key)
+        y_dict = _sample_dataset(adata, time_key, obs_key, onehot_encode_y)
+        y = _apply_padding(y_dict, pad_cell_dict, adata, obs_key, onehot_encode_y)
         
         return X, y
     else:
