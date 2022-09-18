@@ -46,8 +46,14 @@ def _return_X_time_resolved(self, idx):
 
 def _return_X_and_y_time_resolved(self, idx):
     return self.X[:, idx], self.y[:, idx]
+
+def _return_X_time_resolved_w_time(self, idx):
+    return self.X[:, idx], self.t
+
+def _return_X_and_y_time_resolved_w_time(self, idx):
+    return self.X[:, idx], self.y[:, idx], self.t
     
-def _setup_time(self, time_key):
+def _setup_time(self, time_key, return_t):
 
     self._time_key = time_key
     
@@ -63,8 +69,16 @@ def _setup_time(self, time_key):
     
     if self._obs_key:
         self._y_len = self.y.shape[1]
-        self._return_item = _return_X_and_y_time_resolved
         assert self._X_len == self._y_len,"X and y do not have the same shape"
+        
+        if return_t:
+            self._return_item = _return_X_and_y_time_resolved_w_time
+        else:
+            self._return_item = _return_X_and_y
     else:
-        self._return_item = _return_X_time_resolved
+        if return_t:
+            self._return_item = _return_X_time_resolved_w_time
+        else:
+            self._return_item = _return_X
+            
     self._len = self._X_len
