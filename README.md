@@ -37,7 +37,7 @@ Returns sampled data `X_batch` as a `torch.Tensor`.
 ```python
 # create a dummy index
 idx = np.random.choice(range(dataset.__len__()), 5)
-X_batch = dataset.__getitem__(idx)
+X_batch = dataset[idx]
 ```
 
 #### `TimeResolvedAnnDataset`
@@ -49,5 +49,21 @@ import anndata as a
 import torch_adata as ta
 
 adata = a.read_h5ad("/path/to/data.h5ad")
-dataset = torch_adata.TimeResolvedAnnDataset(adata, time_key="Time point")
+dataset = torch_adata.TimeResolvedAnnDataset(
+    adata,
+    time_key="Time point",
+    use_key="X_pca",
+    obs_key="weight_key",
+    return_t=True,
+)
+```
+
+When `return_t == True`:
+```python
+X, y, t = dataset[idx]
+```
+
+When `return_t == False`:
+```python
+X, y = dataset[idx]
 ```
