@@ -48,10 +48,10 @@ def _return_X_and_y_time_resolved(self, idx):
     return self.X[:, idx], self.y[:, idx]
 
 def _return_X_time_resolved_w_time(self, idx):
-    return self.X[:, idx], self.t
+    return self.X[:, idx], self.t.unique()
 
 def _return_X_and_y_time_resolved_w_time(self, idx):
-    return self.X[:, idx], self.y[:, idx], self.t
+    return self.X[:, idx], self.y[:, idx], self.t.unique()
     
 def _setup_time(self, time_key, return_t):
 
