@@ -4,6 +4,10 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
+# import packages: -------------------------------------------------------
+import numpy as np
+import torch
+
 # import local dependencies: ---------------------------------------------
 from ._pad_time_resolved_dataset import _pad_time_resolved_dataset
 from ._fetch_data import _fetch_y_from_obs, _use_X
@@ -18,6 +22,9 @@ def _return_X_and_y(self, idx):
 
 
 # ------------------------------------------------------------------------
+def _setup_t(adata, time_key):
+    return torch.Tensor(np.sort(adata.obs[time_key].unique()))
+
 def _setup_X(self, use_key, onehot_encode_y=False):
     self._use_key = use_key
     self.X = _use_X(self._adata, self._use_key, onehot_encode_y)
@@ -56,6 +63,7 @@ def _return_X_and_y_time_resolved_w_time(self, idx):
 def _setup_time(self, time_key, return_t):
 
     self._time_key = time_key
+    self.t = _setup_t(self._adata, self._time_key)
     
     if self._obs_key:
         self.X, self.y = _pad_time_resolved_dataset(

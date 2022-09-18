@@ -17,5 +17,4 @@ from ._AnnDataset import AnnDataset
 class TimeResolvedAnnDataset(AnnDataset):
     def __init__(self, adata, time_key, use_key="X_pca", obs_key=None, return_t=True):
         super().__init__(adata, use_key, obs_key)
-        self.t = np.sort(self._adata.obs[time_key].unique())
         funcs.setup_time(self, time_key, return_t)
