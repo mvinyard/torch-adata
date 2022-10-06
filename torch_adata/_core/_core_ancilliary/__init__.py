@@ -1,5 +1,6 @@
+
 __module_name__ = "__init__.py"
-__doc__ = """functional __init__ module."""
+__doc__ = """core __init__ module."""
 __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
@@ -13,4 +14,3 @@ from ._one_hot_encode import one_hot_encode
 
 # import utility function(s): ------------------------------------------------------------
 from ._data_types import is_numpy_array, is_pandas_categorical, to_np_array, tensorize
-from ._mk_idx import mk_idx

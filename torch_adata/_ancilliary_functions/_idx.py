@@ -1,4 +1,5 @@
-__module_name__ = "_mk_idx.py"
+
+__module_name__ = "_idx.py"
 __doc__ = """Utility module to generate an index within the bounds of len(dataset)"""
 __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
@@ -9,7 +10,7 @@ import numpy as np
 
 
 # sole function: -------------------------------------------------------------------------
-def mk_idx(
+def idx(
     dataset,
     size: int = None,
     replace: bool = False,

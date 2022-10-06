@@ -11,7 +11,12 @@ import anndata
 
 
 # import local dependencies: -------------------------------------------------------------
-from . import _functions as funcs
+from . import _core_ancilliary as core
+
+
+# supporting functions: ------------------------------------------------------------------
+def count_attrs(dataset):
+    setattr(dataset, "_n_attrs", len(dataset._attr_names))
 
 
 # functions called directly by main class: -----------------------------------------------
@@ -22,11 +27,11 @@ def register_args_parse_adata(
     Register passed inputs to AnnDataset class.
     """
 
-    attr_names, one_hot_encode = funcs.register_args(
+    attr_names, one_hot_encode = core.register_args(
         dataset, obs_keys, attr_names, one_hot_encode
     )
 
-    fetch = funcs.Fetch(adata)
+    fetch = core.Fetch(adata)
 
     if groupby:
         dataset._data_axis = 1
@@ -46,6 +51,8 @@ def register_args_parse_adata(
         if obs_keys:
             obs_data = fetch.multi_obs(obs_keys, attr_names, one_hot_encode)
             fetch.update_obs_attrs(dataset, obs_data)
+    
+    count_attrs(dataset)
 
 
 def return_data_on_axis(dataset, idx):
@@ -55,9 +62,6 @@ def return_data_on_axis(dataset, idx):
     if dataset._data_axis:
         return [getattr(dataset, key)[:, idx] for key in dataset._attr_names]
     return [getattr(dataset, key)[idx] for key in dataset._attr_names]
-
-
-# ----------------------------------------------------------------------------------------
 
 
 # Main module class: ---------------------------------------------------------------------
