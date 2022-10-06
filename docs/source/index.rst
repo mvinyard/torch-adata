@@ -2,7 +2,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-torch-adata
+.. image:: ../imgs/torch-adata.logo.large.svg
+  :width: 400
+  :alt: torch-adata logo
 ======================================
 
 .. toctree::
