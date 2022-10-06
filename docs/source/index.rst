@@ -3,7 +3,7 @@
    contain the root `toctree` directive.
 
 .. image:: ../imgs/torch-adata.logo.large.svg
-  :width: 400
+  :width: 1200
   :alt: torch-adata logo
 ======================================
 
