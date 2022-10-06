@@ -26,6 +26,7 @@ If you find this package useful for your own work, please consider reaching out 
 
    installation
    API/index
+   API/ancilliary_functions
 
 .. note::
 
