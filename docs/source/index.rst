@@ -1,9 +1,8 @@
-.. annoyance documentation master file, created by
-   sphinx-quickstart on Thu Dec 23 03:47:27 2021.
+.. torch-adata documentation master file.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-../imgs/torch-adata.logo.large.svg
+torch-adata
 ======================================
 
 .. toctree::
