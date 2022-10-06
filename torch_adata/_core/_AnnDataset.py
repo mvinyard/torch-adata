@@ -35,6 +35,7 @@ def register_args_parse_adata(
 
     if groupby:
         dataset._data_axis = 1
+        dataset._grouped_by = groupby
         dataset.X, obs_data = fetch.grouped_adata(
             groupby=groupby,
             use_key=use_key,
@@ -47,13 +48,15 @@ def register_args_parse_adata(
 
     else:
         dataset._data_axis = 0
+        dataset._grouped_by = None
         dataset.X = fetch.X(use_key)
         if obs_keys:
             obs_data = fetch.multi_obs(obs_keys, attr_names, one_hot_encode)
             fetch.update_obs_attrs(dataset, obs_data)
     
     count_attrs(dataset)
-
+    print(core.identity_msg(dataset))
+    
 
 def return_data_on_axis(dataset, idx):
     """
@@ -88,3 +91,6 @@ class AnnDataset(Dataset):
 
     def __getitem__(self, idx):
         return return_data_on_axis(self, idx)
+    
+    def __repr__(self) -> str:
+        return core.identity_msg(self)
