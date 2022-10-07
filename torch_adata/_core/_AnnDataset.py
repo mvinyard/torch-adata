@@ -25,6 +25,13 @@ def register_args_parse_adata(
 ):
     """
     Register passed inputs to AnnDataset class.
+
+    Notes:
+    ------
+    As a rule, we'll always keep `X` as a required attribute. Optional attributes then
+    come in two additional forms: (1) `X_like` and (2) obs with the following shapes:
+    (1) [n_groups, n_samples, n_dim] (same as `X`)
+    (2) [n_groups, n_samples, 1]
     """
 
     attr_names, one_hot_encode = core.register_args(
