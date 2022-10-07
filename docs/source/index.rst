@@ -14,7 +14,11 @@
 
 Documentation
 ********************
-``torch-adata`` is designed to convert AnnData objects to pytorch datasets.
+``torch-adata`` is a framework for bridging data held in `AnnData` - the most popular single-cell python-based data structure and companion to scanpy - to the PyTorch ``Dataset`` class. ``torch-adata`` is meant to be structured but flexible within the rules of both of these data structures while also being easy to use.
+
+* Deep learning enthusiasts: get started faster with single-cell data.
+* Biologists: get started faster with ML
+* Store and access single-cell data efficiently and share between models, reproducibly (echoing the goals of the ``LightningDataModule``.
 
 
 Install torch-adata
