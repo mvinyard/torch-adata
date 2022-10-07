@@ -1,8 +1,11 @@
+
+# -- import packages: --------------------------------------------------------------------
 from setuptools import setup
 import re
 import os
 import sys
 
+# -- run setup: --------------------------------------------------------------------------
 
 setup(
     name="torch-adata",

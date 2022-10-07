@@ -9,6 +9,6 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 __version__ = "0.0.16"
 
 
-# ----------------------------------------------------------------------------------------
+# -- import modules: ---------------------------------------------------------------------
 from ._core._AnnDataset import AnnDataset
 from ._ancilliary_functions import *

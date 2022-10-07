@@ -22,7 +22,7 @@ def _print_batch_details(batch, attr_names):
         print(" - {}:  {}".format(print_key, batch[n].shape), end="\n")
 
 
-# -- Main module function: ---------------------------------------------------------------
+# -- main module function: ---------------------------------------------------------------
 def dummy_batch(dataset, silent=False):
     """Fetch a dummy batch"""
     dummy_idx = idx(dataset)

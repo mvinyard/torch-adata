@@ -5,11 +5,11 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages: -----------------------------------------------------------------------
+# -- import packages: --------------------------------------------------------------------
 import torch
 
 
-# supporting functions: ------------------------------------------------------------------
+# -- supporting functions: ---------------------------------------------------------------
 def uniform_group_sizes(
     dataset: torch.utils.data.Dataset, n_groups: int = 2
 ) -> list([int, ..., int]):
@@ -47,7 +47,7 @@ def calculate_split_lengths(
     return uniform_group_sizes(dataset, n_groups)
 
 
-# main module function: ------------------------------------------------------------------
+# -- main module function: ---------------------------------------------------------------
 def split(
     dataset: torch.utils.data.Dataset,
     n_groups: int = 2,
