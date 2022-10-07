@@ -17,7 +17,6 @@
 
 # -- Project information -----------------------------------------------------
 
-import torch_adata
 
 project = 'torch-adata'
 copyright = '2022, Michael E. Vinyard'
@@ -26,7 +25,7 @@ author = 'Michael E. Vinyard'
 # The full version, including alpha/beta/rc tags
 
 
-release = torch_adata.__version__
+release = '0.0.16'
 
 
 # -- General configuration ---------------------------------------------------
@@ -68,9 +67,9 @@ html_logo = "../imgs/torch-adata.logo.small.svg"
 html_theme_options = {
     "github_url": "https://github.com/mvinyard/torch-adata",
     "twitter_url": "https://twitter.com/vinyard_m",
-    "pygment_light_style": "tango",
-    "pygment_dark_style": "native"
+    "pygment_style": "tango",
 }
+#     "pygment_dark_style": "native"
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
