@@ -3,4 +3,3 @@ myst_parser==0.15.2
 pydata-sphinx-theme==0.7.1
 readthedocs-sphinx-search==0.1.1
 sphinx==4.2.0
-torch_adata==0.0.15
