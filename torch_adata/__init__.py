@@ -5,7 +5,7 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# specify version: -----------------------------------------------------------------------
+# -- specify package version: ------------------------------------------------------------
 __version__ = "0.0.16"
 
 

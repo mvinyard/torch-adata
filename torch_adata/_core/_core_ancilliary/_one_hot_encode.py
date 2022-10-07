@@ -5,13 +5,13 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages: -----------------------------------------------------------------------
+# -- import packages: --------------------------------------------------------------------
 import sklearn.preprocessing
 import torch
 import numpy
 
 
-# sole function: -------------------------------------------------------------------------
+# -- sole function: ----------------------------------------------------------------------
 def one_hot_encode(y_data: numpy.ndarray) -> (sklearn.preprocessing.OneHotEncoder, torch.Tensor):
 
     """

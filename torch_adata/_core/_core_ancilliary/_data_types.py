@@ -4,13 +4,13 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages: -----------------------------------------------------------------------
+# -- import packages: --------------------------------------------------------------------
 import numpy
 import pandas
 import torch
 
 
-# data type handlers: --------------------------------------------------------------------
+# -- data type handlers: -----------------------------------------------------------------
 def is_numpy_array(x_arr) -> bool:
     """
     Inspects and indicates if input is numpy.ndarray

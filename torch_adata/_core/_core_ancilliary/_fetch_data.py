@@ -5,19 +5,19 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages: -----------------------------------------------------------------------
+# -- import packages: --------------------------------------------------------------------
 import torch
 import pandas
 import anndata
 
 
-# import local dependencies: -------------------------------------------------------------
+# -- import local dependencies: ----------------------------------------------------------
 from ._group_and_pad_adata import group_and_pad_adata
 from ._one_hot_encode import one_hot_encode
 from ._data_types import tensorize, to_np_array
 
 
-# fetch X from adata: --------------------------------------------------------------------
+# -- fetch X from adata: -----------------------------------------------------------------
 def fetch_X(adata, use_key):
     """
     Flexibly fetch a data matrix to use as "X" from adata.
@@ -49,7 +49,7 @@ def fetch_X(adata, use_key):
     print("No suitable array found for dataset...")
 
 
-# fetch from adata.obs table: -------------------------------------------------------------
+# -- fetch from adata.obs table: ----------------------------------------------------------
 def fetch_from_obs(
     obs_df: pandas.DataFrame, obs_key: str, one_hot: bool = False
 ) -> torch.Tensor:
@@ -149,15 +149,15 @@ def fetch_from_grouped_adata(
     --------
     X, obs_stacked
     """
-    # (1) group adata.obs by key, then pad dataset indices: ------------------------------
+    # -- (1) group adata.obs by key, then pad dataset indices: ---------------------------
     idx_dict = group_and_pad_adata(adata, groupby)
 
-    # (2) create receptacles for stacked data: -------------------------------------------
+    # -- (2) create receptacles for stacked data: ----------------------------------------
     X_list = []
     if obs_keys:
         obs_dict = {key: [] for key in attr_names}
 
-    # (3) grab X and each obs vector for each group: -------------------------------------
+    # -- (3) grab X and each obs vector for each group: ----------------------------------
     for group_idx in idx_dict.values():
         group_adata = adata[group_idx]
         X_list.append(fetch_X(group_adata, use_key=use_key))
@@ -168,7 +168,7 @@ def fetch_from_grouped_adata(
             for key in obs_dict.keys():
                 obs_dict[key].append(obs_data[key])
 
-    # (4) restack the data you just grabbed: ---------------------------------------------
+    # -- (4) restack the data you just grabbed: ------------------------------------------
     X = torch.stack(X_list)
     if obs_keys:
         obs_stacked = {key: torch.stack(obs_dict[key]) for key in attr_names}
@@ -176,7 +176,7 @@ def fetch_from_grouped_adata(
     return X, None
 
 
-# Fetch controller class: ----------------------------------------------------------------
+# -- fetch controller class: -------------------------------------------------------------
 class Fetch:
     """Controller class for various fetching functions."""
     def __init__(self, adata):

@@ -5,21 +5,21 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages: -----------------------------------------------------------------------
+# -- import packages: --------------------------------------------------------------------
 from torch.utils.data import Dataset
 import anndata
 
 
-# import local dependencies: -------------------------------------------------------------
+# -- import local dependencies: ----------------------------------------------------------
 from . import _core_ancilliary as core
 
 
-# supporting functions: ------------------------------------------------------------------
+# -- supporting functions: ---------------------------------------------------------------
 def count_attrs(dataset):
     setattr(dataset, "_n_attrs", len(dataset._attr_names))
 
 
-# functions called directly by main class: -----------------------------------------------
+# -- functions called directly by main class: --------------------------------------------
 def register_args_parse_adata(
     dataset, adata, groupby, use_key, obs_keys, attr_names, one_hot_encode
 ):
@@ -68,7 +68,7 @@ def return_data_on_axis(dataset, idx):
     return [getattr(dataset, key)[idx] for key in dataset._attr_names]
 
 
-# Main module class: ---------------------------------------------------------------------
+# -- Main module class: ------------------------------------------------------------------
 class AnnDataset(Dataset):
     """AnnDataset Module for formatting AnnData as a pytorch Dataset."""
 

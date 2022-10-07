@@ -5,15 +5,15 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# import packages: -----------------------------------------------------------------------
+# -- import packages: --------------------------------------------------------------------
 import licorice_font
 
 
-# import local dependencies: -------------------------------------------------------------
+# -- import local dependencies: ----------------------------------------------------------
 from ._idx import idx
 
 
-# supporting functions: ------------------------------------------------------------------
+# -- supporting functions: ---------------------------------------------------------------
 def _print_batch_details(batch, attr_names):
     """print the dummy batch details"""
     licorice_font.underline("Batch:", ["BOLD"], n_newline=0)
@@ -22,7 +22,7 @@ def _print_batch_details(batch, attr_names):
         print(" - {}:  {}".format(print_key, batch[n].shape), end="\n")
 
 
-# Main module function: ------------------------------------------------------------------
+# -- Main module function: ---------------------------------------------------------------
 def dummy_batch(dataset, silent=False):
     """Fetch a dummy batch"""
     dummy_idx = idx(dataset)
