@@ -22,7 +22,8 @@ def identity_msg(dataset):
         msg_g1 = licorice_font.font_format("Grouped by", ["BOLD"])
         msg_g2 = licorice_font.font_format(dataset._grouped_by, ["RED"])
         groupby_description = "{}: '{}' with attributes:".format(msg_g1, msg_g2)
-
+    else:
+        groupby_description = ""
     attr_print_list = []
     for attr in dataset._attr_names:
         print_attr = licorice_font.font_format(attr, ["BOLD"])
