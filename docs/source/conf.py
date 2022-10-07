@@ -64,6 +64,8 @@ html_logo = "../imgs/torch-adata.logo.small.svg"
 html_theme_options = {
     "github_url": "https://github.com/mvinyard/torch-adata",
     "twitter_url": "https://twitter.com/vinyard_m",
+    "pygment_light_style": "tango",
+    "pygment_dark_style": "native"
 }
 
 
