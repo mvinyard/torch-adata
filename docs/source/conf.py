@@ -17,12 +17,16 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'annoyance'
+import torch_adata
+
+project = 'torch-adata'
 copyright = '2022, Michael E. Vinyard'
 author = 'Michael E. Vinyard'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.12'
+
+
+release = torch_adata.__version__
 
 
 # -- General configuration ---------------------------------------------------
