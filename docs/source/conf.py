@@ -67,10 +67,8 @@ html_logo = "../imgs/torch-adata.logo.small.svg"
 html_theme_options = {
     "github_url": "https://github.com/mvinyard/torch-adata",
     "twitter_url": "https://twitter.com/vinyard_m",
-    "pygment_style": "tango",
+    "codetextcolor": "ee4c2c",
 }
-#     "pygment_dark_style": "native"
-
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
