@@ -152,6 +152,7 @@ def register_init(
     """
 
     dataset._silent = silent
+    dataset._use_key = use_key
 
     attr_keys, attr_names, one_hot = register_args(
         dataset, obs_keys, aux_keys, attr_names, one_hot
@@ -185,4 +186,4 @@ def register_init(
         
     count_attrs(dataset)
     if not dataset._silent:
-        print(identity_msg(dataset))
+        identity_msg(dataset, do_print=True)

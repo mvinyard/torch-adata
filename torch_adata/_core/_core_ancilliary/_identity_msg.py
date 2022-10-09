@@ -9,24 +9,53 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 import licorice_font
 
 
-def identity_msg(dataset):
-    msg_01 = licorice_font.font_format("torch", ["RED", "BOLD"])
-    msg_02 = licorice_font.font_format("adata", ["PURPLE", "BOLD"])
-    msg = "[ {}-{} ]: AnnDataset object with {} samples".format(
-        msg_01, msg_02, len(dataset)
-    )
-    underline = "".join(["-"] * int(48 + len(str(len(dataset)))))
-    header = "{}\n{}".format(msg, underline)
+from licorice_font import font_format as ff
 
-    if dataset._data_axis:
-        msg_g1 = licorice_font.font_format("Grouped by", ["BOLD"])
-        msg_g2 = licorice_font.font_format(dataset._grouped_by, ["RED"])
-        groupby_description = "{}: '{}' with attributes:".format(msg_g1, msg_g2)
-    else:
-        groupby_description = ""
-    attr_print_list = []
-    for attr in dataset._attr_names:
-        print_attr = licorice_font.font_format(attr, ["BOLD"])
-        attr_print_list.append(" - {}: {}".format(print_attr, getattr(dataset, attr).shape))
-    
-    return "\n".join([header, groupby_description] + attr_print_list)
+
+def _header_msg(dataset):
+    l = len(dataset)
+    msg = "[ {}-{} ]: AnnDataset object with {} samples\n{}"
+    t, a = ff("torch", ["RED", "BOLD"]), ff("adata", ["PURPLE", "BOLD"])
+    u = "".join(["-"] * int(48 + len(str(l))))
+    return msg.format(t, a, l, u)
+
+
+def _groupby_msg(dataset):
+
+    if not dataset._grouped_by:
+        return
+    msg_g1 = ff("Grouped by", ["BOLD"])
+    msg_g2 = ff(dataset._grouped_by, ["RED"])
+    return "{}: '{}' with attributes:".format(msg_g1, msg_g2)
+
+
+def _attr_msg(attr_name_set, title):
+    if attr_name_set:
+        return " - {:<18}".format(ff(title + ":", ["BOLD"])) + ", ".join(attr_name_set)
+
+
+def _all_attr_msg(dataset):
+
+    aux_msg = _attr_msg(dataset._aux_attr_names, title="X_aux")
+    obs_msg = _attr_msg(dataset._obs_attr_names, title="obs")
+    if any([aux_msg, obs_msg]):
+        return "\n".join([aux_msg, obs_msg])
+
+
+def _X_msg(use_key):
+    msg = "{} (use_key = '{}')"
+    return msg.format(ff(" - X", ["BOLD"]), use_key)
+
+
+def identity_msg(dataset, do_print=False):
+    header = _header_msg(dataset)
+    groupby = _groupby_msg(dataset)
+    if groupby:
+        header = "\n".join([header, groupby])
+    msg = "\n".join([header, _X_msg(dataset._use_key)])
+    attrs = _all_attr_msg(dataset)
+    if attrs:
+        msg = "\n".join([msg, attrs])
+    if not do_print:
+        return msg
+    print(msg)
