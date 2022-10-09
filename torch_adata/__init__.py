@@ -12,3 +12,4 @@ __version__ = "0.0.16"
 # -- import modules: ---------------------------------------------------------------------
 from ._core._AnnDataset import AnnDataset
 from ._ancilliary_functions import *
+from ._core import _core_ancilliary as dev
