@@ -14,16 +14,6 @@ import anndata
 from . import _core_ancilliary as core
 
 
-# -- supporting functions: ---------------------------------------------------------------
-def return_data_on_axis(dataset, idx):
-    """
-    Automatically return fetched / sampled batches of data along the right data axes.
-    """
-    if dataset._data_axis:
-        return [getattr(dataset, key)[:, idx] for key in dataset._attr_names]
-    return [getattr(dataset, key)[idx] for key in dataset._attr_names]
-
-
 # -- Main module class: ------------------------------------------------------------------
 class AnnDataset(Dataset):
     """AnnDataset Module for formatting AnnData as a pytorch Dataset."""
@@ -37,8 +27,40 @@ class AnnDataset(Dataset):
         attr_names: list([str, ..., str]) = None,
         one_hot: list([bool, ..., bool]) = False,
         aux_keys: list([str, ..., str]) = None,
-        silent=False,
+        silent: bool =False,
     )->None:
+        
+        """
+        adata
+            type: anndata.AnnData
+
+        use_key
+            type: str
+        
+        groupby
+            type: str
+            default: None
+        
+        obs_keys
+            type: list([str, ..., str])
+            default: None
+            
+        attr_names
+            type: list([str, ..., str])
+            default: None
+            
+        one_hot
+            type: list([bool, ..., bool])
+            default: False
+        
+        aux_keys
+            type: list([str, ..., str])
+            default: None
+        
+        silent
+            type: bool
+            default: False
+        """
         
         super().__init__()
 

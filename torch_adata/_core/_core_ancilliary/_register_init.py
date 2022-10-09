@@ -24,15 +24,12 @@ def as_list(item):
     return []
 
 def compile_attributes(obs_keys, aux_keys):
-    obs_keys = as_list(obs_keys)
-    aux_keys = as_list(aux_keys)
-    attr_keys = as_list(obs_keys) + as_list(aux_keys)
-    return attr_keys, obs_keys, aux_keys
+    return {"obs": as_list(obs_keys), "aux": as_list(aux_keys)}
 
 def count_attrs(dataset):
     setattr(dataset, "_n_attrs", len(dataset._attr_names))
     
-def register_attr_names(dataset, attr_names, given_keys):
+def register_attr_names(dataset, attr_names, attr_keys):
 
     """
     Notes:
@@ -41,11 +38,16 @@ def register_attr_names(dataset, attr_names, given_keys):
     key names. Instead, I decided to just replace and potential spaces
     in the obs_key passed with an underscore.
     """
-
-    if not attr_names:
-        attr_names = [rm_space(key) for key in given_keys]
-    setattr(dataset, "_attr_names", ["X"] + attr_names)
-    return attr_names
+    
+    full_attr_list = []
+    formatted_attr_names = {}
+    for key, attr_group in attr_keys.items():
+        if not attr_names:
+            formatted_attr_names[key] = [rm_space(key) for key in attr_group]
+            setattr(dataset, "_{}_attr_names".format(key), formatted_attr_names[key])
+            full_attr_list += formatted_attr_names[key]
+    setattr(dataset, "_attr_names", ["X"] + full_attr_list)
+    return formatted_attr_names
 
 
 def register_one_hot_encode(
@@ -115,14 +117,12 @@ def register_args(dataset,
         listed before aux_keys
     """
 
+    attr_keys = compile_attributes(obs_keys, aux_keys)
     
-    attr_keys, obs_keys, aux_keys = compile_attributes(obs_keys, aux_keys)
-
     if attr_keys:
         attr_names = register_attr_names(dataset, attr_names, attr_keys)
-        one_hot = register_one_hot_encode(one_hot, obs_keys)
-        print(" - ONE HOT: ", one_hot)
-        return attr_keys, obs_keys, aux_keys, attr_names, one_hot
+        one_hot = register_one_hot_encode(one_hot, attr_keys['obs'])
+        return attr_keys, attr_names, one_hot
 
     setattr(dataset, "_attr_names", ["X"])
     return [None] * 3
@@ -153,7 +153,7 @@ def register_init(
 
     dataset._silent = silent
 
-    attr_keys, obs_keys, aux_keys, attr_names, one_hot = register_args(
+    attr_keys, attr_names, one_hot = register_args(
         dataset, obs_keys, aux_keys, attr_names, one_hot
     )
 
@@ -165,8 +165,8 @@ def register_init(
         dataset.X, obs_data, aux_data = fetch.grouped_adata(
             groupby=groupby,
             use_key=use_key,
-            obs_keys=obs_keys,
-            aux_keys=aux_keys,
+            obs_keys=attr_keys["obs"],
+            aux_keys=attr_keys["aux"],
             attr_names=attr_names,
             one_hot=one_hot,
         )
@@ -179,13 +179,9 @@ def register_init(
         if obs_keys:
             obs_data = fetch.multi_obs(obs_keys, attr_names, one_hot)
             fetch.update_obs_attrs(dataset, obs_data)
-        if len(attr_keys) > len(obs_keys): # if True, has aux attrs
-            aux_data = {}
-            for k in range(len(obs_keys), len(attr_keys)):
-                aux_attr = attr_names[k]
-                print(" - AUX: {}".format(aux_attr))
-                setattr(dataset, aux_attr, fetch.X(aux_attr))
-#                 aux_data[aux_attr] = fetch.X(aux_attr)
+        if attr_keys['aux']:
+            for name, attr in zip(attr_names['aux'], attr_keys['aux']):
+                setattr(dataset, name, fetch.X(attr))
         
     count_attrs(dataset)
     if not dataset._silent:

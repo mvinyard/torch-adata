@@ -11,6 +11,7 @@ __version__ = "0.0.16"
 
 # -- import AnnDataset-facing functions: -------------------------------------------------
 from ._register_init import register_init
+from ._return_data_on_axis import return_data_on_axis
 
 
 # -- import key functions: ---------------------------------------------------------------

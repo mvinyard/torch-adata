@@ -111,16 +111,10 @@ def fetch_from_multiple_obs_keys(adata, obs_keys, attr_names, one_hot):
     obs_data = {}
     for n, key in enumerate(obs_keys):
         val = fetch_from_obs(adata.obs, obs_key=key, one_hot=one_hot[n])
-        obs_data[attr_names[n]] = val
+        obs_data[attr_names["obs"][n]] = val
 
     return obs_data
 
-def _subset_obs_names(attr_names, obs_keys)->list([str, ..., str]):
-    return attr_names[:len(obs_keys)]
-
-def _isolate_aux_names(attr_names, obs_keys) -> list([str, ..., str]):
-    if len(attr_names) > len(obs_keys):
-        return [attr_names[i] for i in range(len(obs_keys), len(attr_names))]
 
 def fetch_from_grouped_adata(
     adata: anndata.AnnData,
@@ -163,19 +157,11 @@ def fetch_from_grouped_adata(
     idx_dict = group_and_pad_adata(adata, groupby)
     
     # -- (2) create receptacles for stacked data: ----------------------------------------
-    
-    print("attr names", attr_names)
-    obs_names = _subset_obs_names(attr_names, obs_keys)
-    aux_names = _isolate_aux_names(attr_names, obs_keys)
-    print("obs names", obs_names)
-    print("aux names", aux_names)
-    
     X_list = []
-    if obs_names:
-        obs_dict = {key: [] for key in obs_names}
-#     aux_list = []
-    if aux_names:
-        aux_dict = {key: [] for key in aux_names}
+    if obs_keys:
+        obs_dict = {key: [] for key in attr_names['obs']}
+    if aux_keys:
+        aux_dict = {key: [] for key in attr_names['aux']}
 
     # -- (3) grab X and each obs vector for each group: ----------------------------------
     for group_idx in idx_dict.values():
@@ -188,20 +174,20 @@ def fetch_from_grouped_adata(
             for key in obs_dict.keys():
                 obs_dict[key].append(obs_data[key])
         if aux_keys:
-            for aux_attr in aux_names:
+            for aux_attr in attr_names['aux']:
                 aux_dict[aux_attr].append(fetch_X(group_adata, aux_attr))
 
     # -- (4) restack the data you just grabbed: ------------------------------------------
     X = torch.stack(X_list)
     if obs_keys and aux_keys:
-        obs_stacked = {key: torch.stack(obs_dict[key]) for key in obs_names}
-        aux_stacked = {key: torch.stack(aux_dict[key]) for key in aux_names}
+        obs_stacked = {key: torch.stack(obs_dict[key]) for key in attr_names['obs']}
+        aux_stacked = {key: torch.stack(aux_dict[key]) for key in attr_names['aux']}
         return X, obs_stacked, aux_stacked
     if (obs_keys) and (not aux_keys):
-        obs_stacked = {key: torch.stack(obs_dict[key]) for key in obs_names}
+        obs_stacked = {key: torch.stack(obs_dict[key]) for key in attr_names['obs']}
         return X, obs_stacked, None
     if (aux_keys) and (not obs_keys):
-        aux_stacked = {key: torch.stack(aux_dict[key]) for key in aux_names}
+        aux_stacked = {key: torch.stack(aux_dict[key]) for key in attr_names['aux']}
         return X, None, aux_stacked
     else:
         return X, None, None
