@@ -80,7 +80,7 @@ class AnnDataset(Dataset):
         return self.X.shape[self._data_axis]
 
     def __getitem__(self, idx):
-        return return_data_on_axis(self, idx)
+        return core.return_data_on_axis(self, idx)
     
     def __repr__(self) -> str:
         return core.identity_msg(self)
