@@ -15,57 +15,6 @@ from . import _core_ancilliary as core
 
 
 # -- supporting functions: ---------------------------------------------------------------
-def count_attrs(dataset):
-    setattr(dataset, "_n_attrs", len(dataset._attr_names))
-
-
-# -- functions called directly by main class: --------------------------------------------
-def register_args_parse_adata(
-    dataset, adata, groupby, use_key, obs_keys, attr_names, one_hot_encode
-):
-    """
-    Register passed inputs to AnnDataset class.
-
-    Notes:
-    ------
-    As a rule, we'll always keep `X` as a required attribute. Optional attributes then
-    come in two additional forms: (1) `X_like` and (2) obs with the following shapes:
-    (1) [n_groups, n_samples, n_dim] (same as `X`)
-    (2) [n_groups, n_samples, 1]
-    """
-
-    attr_names, one_hot_encode = core.register_args(
-        dataset, obs_keys, attr_names, one_hot_encode
-    )
-
-    fetch = core.Fetch(adata)
-
-    if groupby:
-        dataset._data_axis = 1
-        dataset._grouped_by = groupby
-        dataset.X, obs_data = fetch.grouped_adata(
-            groupby=groupby,
-            use_key=use_key,
-            obs_keys=obs_keys,
-            attr_names=attr_names,
-            one_hot=one_hot_encode,
-        )
-        if obs_keys:
-            fetch.update_obs_attrs(dataset, obs_data)
-
-    else:
-        dataset._data_axis = 0
-        dataset._grouped_by = None
-        dataset.X = fetch.X(use_key)
-        if obs_keys:
-            obs_data = fetch.multi_obs(obs_keys, attr_names, one_hot_encode)
-            fetch.update_obs_attrs(dataset, obs_data)
-    
-    count_attrs(dataset)
-    if not dataset._silent:
-        print(core.identity_msg(dataset))
-    
-
 def return_data_on_axis(dataset, idx):
     """
     Automatically return fetched / sampled batches of data along the right data axes.
@@ -86,15 +35,23 @@ class AnnDataset(Dataset):
         groupby: str = None,
         obs_keys: list([str, ..., str]) = None,
         attr_names: list([str, ..., str]) = None,
-        one_hot_encode: list([bool, ..., bool]) = False,
-        silent=True,
-    ):
-        super().__init__()
+        one_hot: list([bool, ..., bool]) = False,
+        aux_keys: list([str, ..., str]) = None,
+        silent=False,
+    )->None:
         
-        self._silent = silent
+        super().__init__()
 
-        register_args_parse_adata(
-            self, adata, groupby, use_key, obs_keys, attr_names, one_hot_encode
+        core.register_init(
+            self,
+            adata,
+            groupby,
+            use_key,
+            obs_keys,
+            aux_keys,
+            attr_names,
+            one_hot,
+            silent,
         )
 
     def __len__(self):

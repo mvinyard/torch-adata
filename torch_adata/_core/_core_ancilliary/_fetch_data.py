@@ -14,7 +14,7 @@ import anndata
 # -- import local dependencies: ----------------------------------------------------------
 from ._group_and_pad_adata import group_and_pad_adata
 from ._one_hot_encode import one_hot_encode
-from ._data_types import tensorize, to_np_array
+from ._data_typing import tensorize, to_np_array
 
 
 # -- fetch X from adata: -----------------------------------------------------------------
@@ -42,6 +42,8 @@ def fetch_X(adata, use_key):
 
     if use_key == "X":
         return tensorize(adata.X)
+    if use_key in adata.layers:
+        return tensorize(adata.layers[use_key])
     if use_key in adata.obsm_keys():
         return tensorize(adata.obsm[use_key])
     if use_key in adata.obs_keys():
@@ -78,7 +80,7 @@ def fetch_from_obs(
     y = to_np_array(obs_df[obs_key].values).reshape(-1, 1)
 
     if y.dtype == "O" or one_hot:
-        return one_hot_encode(y)
+        return one_hot_encode(y)[1]
     return torch.Tensor(y)
 
 
@@ -113,12 +115,19 @@ def fetch_from_multiple_obs_keys(adata, obs_keys, attr_names, one_hot):
 
     return obs_data
 
+def _subset_obs_names(attr_names, obs_keys)->list([str, ..., str]):
+    return attr_names[:len(obs_keys)]
+
+def _isolate_aux_names(attr_names, obs_keys) -> list([str, ..., str]):
+    if len(attr_names) > len(obs_keys):
+        return [attr_names[i] for i in range(len(obs_keys), len(attr_names))]
 
 def fetch_from_grouped_adata(
     adata: anndata.AnnData,
     groupby: str,
     use_key: str,
     obs_keys: list([str, ..., str]),
+    aux_keys: list([str, ..., str]),
     attr_names: list([str, ..., str]),
     one_hot: list([bool, ..., bool]),
 ):
@@ -140,6 +149,7 @@ def fetch_from_grouped_adata(
         type: list([str, ..., str])
 
     attr_names:
+        obs_keys listed first, then aux_keys.
         type: list([str, ..., str])
 
     one_hot_encode:
@@ -151,29 +161,50 @@ def fetch_from_grouped_adata(
     """
     # -- (1) group adata.obs by key, then pad dataset indices: ---------------------------
     idx_dict = group_and_pad_adata(adata, groupby)
-
+    
     # -- (2) create receptacles for stacked data: ----------------------------------------
+    
+    print("attr names", attr_names)
+    obs_names = _subset_obs_names(attr_names, obs_keys)
+    aux_names = _isolate_aux_names(attr_names, obs_keys)
+    print("obs names", obs_names)
+    print("aux names", aux_names)
+    
     X_list = []
-    if obs_keys:
-        obs_dict = {key: [] for key in attr_names}
+    if obs_names:
+        obs_dict = {key: [] for key in obs_names}
+#     aux_list = []
+    if aux_names:
+        aux_dict = {key: [] for key in aux_names}
 
     # -- (3) grab X and each obs vector for each group: ----------------------------------
     for group_idx in idx_dict.values():
         group_adata = adata[group_idx]
-        X_list.append(fetch_X(group_adata, use_key=use_key))
+        X_list.append(fetch_X(group_adata, use_key))
         if obs_keys:
             obs_data = fetch_from_multiple_obs_keys(
                 group_adata, obs_keys, attr_names, one_hot
             )
             for key in obs_dict.keys():
                 obs_dict[key].append(obs_data[key])
+        if aux_keys:
+            for aux_attr in aux_names:
+                aux_dict[aux_attr].append(fetch_X(group_adata, aux_attr))
 
     # -- (4) restack the data you just grabbed: ------------------------------------------
     X = torch.stack(X_list)
-    if obs_keys:
-        obs_stacked = {key: torch.stack(obs_dict[key]) for key in attr_names}
-        return X, obs_stacked
-    return X, None
+    if obs_keys and aux_keys:
+        obs_stacked = {key: torch.stack(obs_dict[key]) for key in obs_names}
+        aux_stacked = {key: torch.stack(aux_dict[key]) for key in aux_names}
+        return X, obs_stacked, aux_stacked
+    if (obs_keys) and (not aux_keys):
+        obs_stacked = {key: torch.stack(obs_dict[key]) for key in obs_names}
+        return X, obs_stacked, None
+    if (aux_keys) and (not obs_keys):
+        aux_stacked = {key: torch.stack(aux_dict[key]) for key in aux_names}
+        return X, None, aux_stacked
+    else:
+        return X, None, None
 
 
 # -- fetch controller class: -------------------------------------------------------------
@@ -209,20 +240,34 @@ class Fetch:
             self.adata, obs_keys, attr_names, one_hot
         )
 
-    def grouped_adata(self, groupby, use_key, obs_keys, attr_names, one_hot):
+    def grouped_adata(self, groupby, use_key, obs_keys, aux_keys, attr_names, one_hot):
         """
         Fetch X and/or multiple cols from obs using a groupby
         accessor for adata.obs
         """
         return fetch_from_grouped_adata(
-            self.adata, groupby, use_key, obs_keys, attr_names, one_hot
+            self.adata, groupby, use_key, obs_keys, aux_keys, attr_names, one_hot
         )
 
     def update_obs_attrs(self, dataset, obs_data):
         """
-        Add to the dataset, the attributes found in obs to be returned
+        Add attributes to the dataset from obs_keys to be returned
         upon calling dataset.__getitem__()
         """
         for attr_name, val in obs_data.items():
             setattr(dataset, attr_name, val)
+    
+    def update_aux_attrs(self, dataset, aux_data):
+        """
+        Add attributes to the dataset from aux_keys to be returned
+        upon calling dataset.__getitem__()
+        """
+        for attr_name, val in aux_data.items():
+            setattr(dataset, attr_name, val)
+            
+    def update_attrs(self, dataset, obs_data, aux_data):
+        if obs_data:
+            self.update_obs_attrs(dataset, obs_data)
+        if aux_data:
+            self.update_aux_attrs(dataset, aux_data)
             
