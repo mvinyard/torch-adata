@@ -5,7 +5,7 @@
 [![Documentation Status](https://readthedocs.org/projects/torch-adata/badge/?version=latest)](https://torch-adata.readthedocs.io/en/latest/?badge=latest)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Create pytorch Datasets from [`AnnData`](https://anndata.readthedocs.io/en/latest/)
+Create [`PyTorch Datasets`](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html) from [`AnnData`](https://anndata.readthedocs.io/en/latest/)
 
 ## Installation
 
@@ -22,7 +22,7 @@ pip install -e .
 
 ## The main API
 
-The primary class is the `AnnDataset`. This is a subclass of the widely-used [`torch.utils.data.Dataset`](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html). The PyTorch `Dataset` module enables us to take advantage of built-in multiprocessing and other organizational tricks that ultimately standardize workflows and enable reproducibility.
+The primary class is the [`AnnDataset`](https://github.com/mvinyard/torch-adata/blob/main/torch_adata/_core/_AnnDataset.py). This is a subclass of the widely-used [`torch.utils.data.Dataset`](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html). The PyTorch `Dataset` module enables us to take advantage of built-in multiprocessing and other organizational tricks that ultimately standardize workflows and enable reproducibility.
 
 
 ```python
@@ -36,8 +36,8 @@ dataset = torch_adata.AnnDataset(adata, use_key="X_pca", groupby="time", obs_key
 [ torch-adata ]: AnnDataset object with 7131 samples
 ----------------------------------------------------
 Grouped by: 'time' with attributes:
- - X: torch.Size([3, 7131, 50])
- - affinity: torch.Size([3, 7131, 1])
+ - X (use_key = 'X_pca') torch.Size([3, 7131, 50])
+ - obs: affinity: torch.Size([3, 7131, 1])
 ```
 
 **For more information, please visit the [documentation](https://torch-adata.readthedocs.io/en/latest/index.html)!**
