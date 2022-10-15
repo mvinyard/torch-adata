@@ -44,10 +44,15 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-# Generate the API documentation when building
+
+# -- Generate API documentation ----------------------------------------------------------
+
+extensions = ['autoapi.extension']
+autoapi_dirs = ['../torch_adata']
 autosummary_generate = True
 
-# -- Options for HTML output -------------------------------------------------
+
+# -- Options for HTML output -------------------------------------------------------------
 
 html_show_sourcelink = True
 html_theme = 'pydata_sphinx_theme'
