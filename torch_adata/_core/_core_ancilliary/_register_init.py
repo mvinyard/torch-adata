@@ -10,18 +10,12 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 # -- import packages: --------------------------------------------------------------------
 from ._fetch_data import Fetch
 from ._identity_msg import identity_msg
+from ._data_typing import as_list
 
 
 # -- supporting functions: ---------------------------------------------------------------
 def rm_space(key, filler="_"):
     return filler.join(key.split(" "))
-
-def as_list(item):
-    if item:
-        if not isinstance(item, list):
-            return [item]
-        return item
-    return []
 
 def compile_attributes(obs_keys, aux_keys):
     return {"obs": as_list(obs_keys), "aux": as_list(aux_keys)}
@@ -38,14 +32,16 @@ def register_attr_names(dataset, attr_names, attr_keys):
     key names. Instead, I decided to just replace and potential spaces
     in the obs_key passed with an underscore.
     """
-    
+
     full_attr_list = []
     formatted_attr_names = {}
     for key, attr_group in attr_keys.items():
-        if not attr_names:
+        if not attr_names.get(key):
             formatted_attr_names[key] = [rm_space(key) for key in attr_group]
-            setattr(dataset, "_{}_attr_names".format(key), formatted_attr_names[key])
-            full_attr_list += formatted_attr_names[key]
+        else:
+            formatted_attr_names[key] = attr_names[key]
+        full_attr_list += formatted_attr_names[key]
+        setattr(dataset, "_{}_attr_names".format(key), formatted_attr_names[key])
     setattr(dataset, "_attr_names", ["X"] + full_attr_list)
     return formatted_attr_names
 
@@ -163,7 +159,7 @@ def register_init(
     if groupby:
         dataset._data_axis = 1
         dataset._grouped_by = groupby
-        dataset.X, obs_data, aux_data = fetch.grouped_adata(
+        dataset.X, dataset.groups, obs_data, aux_data = fetch.grouped_adata(
             groupby=groupby,
             use_key=use_key,
             obs_keys=attr_keys["obs"],

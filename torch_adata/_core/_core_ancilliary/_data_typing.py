@@ -81,3 +81,11 @@ def tensorize(x_arr) -> torch.Tensor:
         type: torch.Tensor
     """
     return torch.Tensor(to_np_array(x_arr))
+
+
+def as_list(item):
+    if item:
+        if not isinstance(item, list):
+            return [item]
+        return item
+    return []

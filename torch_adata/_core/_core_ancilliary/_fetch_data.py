@@ -154,8 +154,8 @@ def fetch_from_grouped_adata(
     X, obs_stacked
     """
     # -- (1) group adata.obs by key, then pad dataset indices: ---------------------------
-    idx_dict = group_and_pad_adata(adata, groupby)
-    
+    idx_dict, groups = group_and_pad_adata(adata, groupby)
+        
     # -- (2) create receptacles for stacked data: ----------------------------------------
     X_list = []
     if obs_keys:
@@ -182,15 +182,15 @@ def fetch_from_grouped_adata(
     if obs_keys and aux_keys:
         obs_stacked = {key: torch.stack(obs_dict[key]) for key in attr_names['obs']}
         aux_stacked = {key: torch.stack(aux_dict[key]) for key in attr_names['aux']}
-        return X, obs_stacked, aux_stacked
+        return X, groups, obs_stacked, aux_stacked
     if (obs_keys) and (not aux_keys):
         obs_stacked = {key: torch.stack(obs_dict[key]) for key in attr_names['obs']}
-        return X, obs_stacked, None
+        return X, groups, obs_stacked, None
     if (aux_keys) and (not obs_keys):
         aux_stacked = {key: torch.stack(aux_dict[key]) for key in attr_names['aux']}
-        return X, None, aux_stacked
+        return X, groups, None, aux_stacked
     else:
-        return X, None, None
+        return X, groups, None, None
 
 
 # -- fetch controller class: -------------------------------------------------------------

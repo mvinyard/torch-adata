@@ -22,4 +22,4 @@ from ._identity_msg import identity_msg
 
 
 # -- import data util functions: ---------------------------------------------------------
-from ._data_typing import is_numpy_array, is_pandas_categorical, to_np_array, tensorize
+from ._data_typing import is_numpy_array, is_pandas_categorical, to_np_array, tensorize, as_list

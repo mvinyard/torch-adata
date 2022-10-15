@@ -8,7 +8,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 # -- import packages: --------------------------------------------------------------------
 import numpy as np
 import anndata
-
+import torch
 
 def max_len(grouped_idx: dict) -> int:
     """
@@ -96,4 +96,9 @@ def group_and_pad_adata(adata: anndata.AnnData, groupby: str) -> dict:
     Notes:
     ------
     """
-    return _pad_indices(adata.obs.groupby(groupby).indices)
+
+    grouped = adata.obs.groupby(groupby)
+    idx = _pad_indices(grouped.indices)
+    groups = torch.Tensor(list(grouped.groups.keys()))
+
+    return idx, groups
