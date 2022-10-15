@@ -24,7 +24,7 @@ class AnnDataset(Dataset):
         use_key: str,
         groupby: str = None,
         obs_keys: list([str, ..., str]) = None,
-        attr_names: list([str, ..., str]) = None,
+        attr_names: dict({"obs":[str, ..., str], "aux":[str, ..., str]}) = {"obs":[], "aux":[]},
         one_hot: list([bool, ..., bool]) = False,
         aux_keys: list([str, ..., str]) = None,
         silent: bool =False,
@@ -35,9 +35,11 @@ class AnnDataset(Dataset):
             type: anndata.AnnData
 
         use_key
+            AnnData accession key that sets dataset.X attribute.
             type: str
         
         groupby
+            Stack dataset on this axis.
             type: str
             default: None
         
@@ -46,8 +48,8 @@ class AnnDataset(Dataset):
             default: None
             
         attr_names
-            type: list([str, ..., str])
-            default: None
+            type: dict({"obs":[str, ..., str], "aux":[str, ..., str]})
+            default: {"obs":[], "aux":[]}
             
         one_hot
             type: list([bool, ..., bool])

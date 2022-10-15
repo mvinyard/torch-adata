@@ -75,6 +75,7 @@ def register_one_hot_encode(
     return one_hot
 
 
+# -- function called by the main API: ----------------------------------------------------
 def register_args(dataset,
                   obs_keys: list([str, ..., str]),
                   aux_keys: list([str, ..., str]),
