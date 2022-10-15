@@ -1,13 +1,13 @@
 
 # -- import packages: --------------------------------------------------------------------
-from setuptools import setup
+import setuptools
 import re
 import os
 import sys
 
 # -- run setup: --------------------------------------------------------------------------
 
-setup(
+setuptools.setup(
     name="torch-adata",
     version="0.0.16",
     python_requires=">3.6.0",
