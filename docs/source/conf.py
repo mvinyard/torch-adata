@@ -48,7 +48,7 @@ exclude_patterns = []
 # -- Generate API documentation ----------------------------------------------------------
 
 extensions = ['autoapi.extension']
-autoapi_dirs = ['../torch_adata']
+autoapi_dirs = ['../../torch_adata']
 autosummary_generate = True
 
 
