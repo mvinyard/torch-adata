@@ -59,6 +59,7 @@ If you find this package useful for your own work, please consider reaching out 
 .. toctree::
    :maxdepth: 3
    :titlesonly:
+   :template: classtemplate.rst
    :hidden:
 
    installation
