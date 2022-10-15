@@ -5,11 +5,6 @@ API
 AnnDataset
 ----------
 
-.. raw:: html
-
-      </div>
-      <div class='col-md-6'>
-
 to install the development version:
 
 .. code-block:: python
@@ -17,12 +12,7 @@ to install the development version:
 
     dataset = torch_adata.AnnDataset(adata)
 
-.. raw:: html
-
-      </div>
-   </div>
-
-
 .. note::
+.. note:: ``torch_adata.AnnDataset`` only requires ``adata``. All parameters are optional.
 
    This project is under active development.
