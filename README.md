@@ -40,6 +40,7 @@ Grouped by: 'time' with attributes:
  - obs: affinity: torch.Size([3, 7131, 1])
 ```
 
+#
 There is an additional approach to this dubbed [`AnnLoader`](https://github.com/scverse/anndata/blob/master/anndata/experimental/pytorch/_annloader.py), highlighted by [Sergei Rybakov](https://github.com/koncopd) in [Interfacing pytorch models with anndata](https://anndata-tutorials.readthedocs.io/en/latest/annloader.html)
 
 
