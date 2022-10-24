@@ -30,12 +30,16 @@ class BaseLightningDataModule(ABC, LightningDataModule):
         super(BaseLightningDataModule, self).__init__()
         self.__parse__(locals())        
 
-    def __parse__(self, kwargs, ignore=["self"]):
-        self.kwargs = {}
+    def __parse__(self, kwargs, ignore=["self", "__class__"]):
+        self._kwargs = {}
         for k, v in kwargs.items():
             if not k in ignore:
                 setattr(self, k, v)
-                self.kwargs[k] = v
+                self._kwargs[k] = v
+                if k == "kwargs":
+                    for l, w in v.items():
+                        setattr(self, l, w)
+                        self._kwargs[l] = w
 
     def train_dataloader(self):
         return DataLoader(
