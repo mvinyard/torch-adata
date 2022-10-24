@@ -22,7 +22,7 @@ from ._data_typing import tensorize, to_np_array
 
 
 # -- fetch X from adata: -----------------------------------------------------------------
-def fetch_X(adata, use_key):
+def fetch_X(adata: anndata.AnnData, use_key: str):
     """
     Flexibly fetch a data matrix to use as "X" from adata.
 
@@ -88,7 +88,11 @@ def fetch_from_obs(
     return torch.Tensor(y)
 
 
-def fetch_from_multiple_obs_keys(adata, obs_keys, attr_names, one_hot):
+def fetch_from_multiple_obs_keys(adata: anndata,
+                                 obs_keys: list([str, "...", str]),
+                                 attr_names: list([str, "...", str]),
+                                 one_hot: list([bool, "...", bool]),
+                                ):
 
     """
     Fetch obs data from multiple passed obs_keys.
@@ -124,10 +128,10 @@ def fetch_from_grouped_adata(
     adata: anndata.AnnData,
     groupby: str,
     use_key: str,
-    obs_keys: list([str, ..., str]),
-    aux_keys: list([str, ..., str]),
-    attr_names: list([str, ..., str]),
-    one_hot: list([bool, ..., bool]),
+    obs_keys: list([str, "...", str]),
+    aux_keys: list([str, "...", str]),
+    attr_names: list([str, "...", str]),
+    one_hot: list([bool, "...", bool]),
 ):
     """
     Fetch both X and ancilliary obs data from a grouped anndata object.
@@ -200,7 +204,7 @@ def fetch_from_grouped_adata(
 # -- fetch controller class: -------------------------------------------------------------
 class Fetch:
     """Controller class for various fetching functions."""
-    def __init__(self, adata):
+    def __init__(self, adata: anndata.AnnData):
 
         """
         Parameters:

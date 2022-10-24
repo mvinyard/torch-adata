@@ -27,10 +27,10 @@ class AnnDataset(Dataset):
         adata: anndata.AnnData,
         use_key: str,
         groupby: str = None,
-        obs_keys: list([str, ..., str]) = None,
-        attr_names: dict({"obs":[str, ..., str], "aux":[str, ..., str]}) = {"obs":[], "aux":[]},
-        one_hot: list([bool, ..., bool]) = False,
-        aux_keys: list([str, ..., str]) = None,
+        obs_keys: list([str, "...", str]) = None,
+        attr_names: dict({"obs":[str, "...", str], "aux":[str, "...", str]}) = {"obs":[], "aux":[]},
+        one_hot: list([bool, "...", bool]) = False,
+        aux_keys: list([str, "...", str]) = None,
         silent: bool =False,
     )->None:
         
