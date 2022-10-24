@@ -11,5 +11,8 @@ __version__ = "0.0.17"
 
 # -- import modules: ---------------------------------------------------------------------
 from ._core._AnnDataset import AnnDataset
-from ._ancilliary_functions import *
-from ._core import _core_ancilliary as dev
+from . import _tools as tl
+
+
+# -- import API-hidden core modules (for dev): -------------------------------------------
+from ._core import _core_ancilliary as _core

@@ -21,20 +21,22 @@ import anndata
 # -- Primary module class: ---------------------------------------------------------------
 class BaseLightningDataModule(ABC, LightningDataModule):
     def __init__(
-        self, adata: anndata.AnnData = None, batch_size=2000, num_workers=os.cpu_count(), **kwargs
+        self,
+        adata: anndata.AnnData = None,
+        batch_size: int = 2000,
+        num_workers: int = os.cpu_count(),
+        **kwargs
     ):
-        super().__init__()
+        super(BaseLightningDataModule, self).__init__()
+        self.__parse__(locals())        
 
-        self.adata = adata
-        self.batch_size = batch_size
-        self.num_workers = num_workers
-        self.kwargs = kwargs
-        self.__configure__()
-    
-    @abstractmethod
-    def __configure__(self):
-        pass
-        
+    def __parse__(self, kwargs, ignore=["self"]):
+        self.kwargs = {}
+        for k, v in kwargs.items():
+            if not k in ignore:
+                setattr(self, k, v)
+                self.kwargs[k] = v
+
     def train_dataloader(self):
         return DataLoader(
             self.train_dataset, batch_size=self.batch_size, num_workers=self.num_workers

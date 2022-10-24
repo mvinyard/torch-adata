@@ -12,7 +12,7 @@ import torch
 # -- supporting functions: ---------------------------------------------------------------
 def uniform_group_sizes(
     dataset: torch.utils.data.Dataset, n_groups: int = 2
-) -> list([int, ..., int]):
+) -> list([int, "...", int]):
     """Split dataset length with even proportions according to number of groups"""
 
     div, mod = divmod(len(dataset), n_groups)
@@ -21,9 +21,9 @@ def uniform_group_sizes(
 
 def proportioned_group_sizes(
     dataset: torch.utils.data.Dataset,
-    percentages: list([float, ..., float]),
+    percentages: list([float, "...", float]),
     remainder_idx: int = -1,
-) -> list([int, ..., int]):
+) -> list([int, "...", int]):
     """Split dataset length with specified proportions/number of groups"""
     n_groups = len(percentages)
     if sum(percentages) < 1:
@@ -39,8 +39,8 @@ def proportioned_group_sizes(
 def calculate_split_lengths(
     dataset: torch.utils.data.Dataset,
     n_groups: int = 2,
-    percentages: list([float, ..., float]) = None,
-) -> list([int, ..., int]):
+    percentages: list([float, "...", float]) = None,
+) -> list([int, "...", int]):
     """Split the length of the dataset into proportioned subsets"""
     if percentages:
         return proportioned_group_sizes(dataset, percentages, remainder_idx=-1)
@@ -51,8 +51,8 @@ def calculate_split_lengths(
 def split(
     dataset: torch.utils.data.Dataset,
     n_groups: int = 2,
-    percentages: list([float, ..., float]) = None,
-) -> list([torch.utils.data.Dataset, ..., torch.utils.data.Dataset]):
+    percentages: list([float, "...", float]) = None,
+) -> list([torch.utils.data.Dataset, "...", torch.utils.data.Dataset]):
     """
     Split dataset using torch.utils.data.random_split.
 
@@ -78,4 +78,5 @@ def split(
     (1) Uses the torch.utils.data.random_split function to actually do the split.
     """
     split_lengths = calculate_split_lengths(dataset, n_groups, percentages)
-    return torch.utils.data.random_split(dataset, lengths=split_lengths)
+    split_dataset = torch.utils.data.random_split(dataset, lengths=split_lengths)
+    return [subset.dataset for subset in split_dataset]
