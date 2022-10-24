@@ -1,9 +1,20 @@
 
+__module_name__ = "setup.py"
+__doc__ = """PYPI package distribution setup."""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.17"
+
+
 # -- import packages: --------------------------------------------------------------------
 import setuptools
 import re
 import os
 import sys
+
 
 # -- run setup: --------------------------------------------------------------------------
 
@@ -19,8 +30,10 @@ setuptools.setup(
     description="torch-adata",
     packages=setuptools.find_packages(),
     install_requires=[
-        "anndata>=0.7.8",
-        "torch>=1.12",
+        "anndata>=0.8",
+        "licorice_font>=0.0.3",
+        "pytorch-lightning>=1.7.7",
+        "torch>=1.12",        
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",

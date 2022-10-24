@@ -1,11 +1,24 @@
 
+__module_name__ = "_base_lightning_data_module.py"
+__doc__ = """Aux. module to organize AnnData/torch datasets into PyTorch-Lightning LightningDataModule."""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.17"
+
+
 # -- import packages: --------------------------------------------------------------------
+from abc import ABC, abstractmethod
+import os
+
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader
-import os
 import anndata
-from abc import ABC, abstractmethod
 
+
+# -- Primary module class: ---------------------------------------------------------------
 class BaseLightningDataModule(ABC, LightningDataModule):
     def __init__(
         self, adata: anndata.AnnData = None, batch_size=2000, num_workers=os.cpu_count(), **kwargs

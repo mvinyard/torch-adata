@@ -5,6 +5,10 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.17"
+
+
 # -- import packages: --------------------------------------------------------------------
 import numpy as np
 import anndata
