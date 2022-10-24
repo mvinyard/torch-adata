@@ -1,41 +1,29 @@
-{{ name | escape | underline }}
+{{ fullname | escape | underline }}
+
+.. rubric:: Description
+
+.. automodule:: {{ fullname }}
 
 .. currentmodule:: {{ fullname }}
 
-{% block functions %}
-{% if functions %}
-.. rubric:: Functions
-
-.. autosummary::
-    :nosignatures:
-{% for item in functions %}
-    {{ item }}
-{%- endfor %}
-{% endif %}
-{% endblock %}
-
-{% block classes %}
 {% if classes %}
 .. rubric:: Classes
 
 .. autosummary::
-    :nosignatures:
-{% for item in classes %}
-    {{ item }}
-{%- endfor %}
-{% endif %}
-{% endblock %}
+    :toctree: .
+    {% for class in classes %}
+    {{ class }}
+    {% endfor %}
 
-{% block exceptions %}
-{% if exceptions %}
-.. rubric:: Exceptions
+{% endif %}
+
+{% if functions %}
+.. rubric:: Functions
 
 .. autosummary::
-    :nosignatures:
-{% for item in exceptions %}
-    {{ item }}
-{%- endfor %}
-{% endif %}
-{% endblock %}
+    :toctree: .
+    {% for function in functions %}
+    {{ function }}
+    {% endfor %}
 
-.. automodule:: {{ fullname }}
+{% endif %}
