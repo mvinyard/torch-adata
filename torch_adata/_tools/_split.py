@@ -79,4 +79,4 @@ def split(
     """
     split_lengths = calculate_split_lengths(dataset, n_groups, percentages)
     split_dataset = torch.utils.data.random_split(dataset, lengths=split_lengths)
-    return [subset.dataset for subset in split_dataset]
+    return [dataset[subset.indices] for subset in split_dataset]
