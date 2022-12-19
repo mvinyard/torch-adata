@@ -31,18 +31,29 @@ def extract_func_kwargs(func, kwargs):
     return func_kwargs
 
 
-# -- base class: -------------------------------------------------------------------------
-class BaseAnnDatasetSplitter(ABC):
-    def __init__(self):
-        pass
-
+# -- API-facing class: -------------------------------------------------------------------
+class AnnDatasetSplit(BaseAnnDatasetSplitter):
     def __parse__(self, kwargs, ignore=["self"]):
         self.kwargs = {}
         for k, v in kwargs.items():
             if not k in ignore:
                 setattr(self, k, v)
                 self.kwargs[k] = v
-
+                
+    def __init__(
+        self,
+        adata: anndata.AnnData,
+        use_key: str = "X_pca",
+        groupby: str = None,
+        obs_keys: str = None,
+        percent_val: float = 0.2,
+        train_key: str = "train",
+        test_key: str = "test",
+        **kwargs,
+    ):
+        self.__parse__(locals())
+        self._obs_cols = adata.obs.columns.tolist()
+        
     def _train_test_obs_keys(self):
         return all([key in self._obs_cols for key in [self.train_key, self.test_key]])
 
@@ -58,23 +69,6 @@ class BaseAnnDatasetSplitter(ABC):
             silent=True,
             **AnnDataset_kwargs
         )
-
-
-# -- API-facing class: -------------------------------------------------------------------
-class AnnDatasetSplit(BaseAnnDatasetSplitter):
-    def __init__(
-        self,
-        adata: anndata.AnnData,
-        use_key: str = "X_pca",
-        groupby: str = None,
-        obs_keys: str = None,
-        percent_val: float = 0.2,
-        train_key: str = "train",
-        test_key: str = "test",
-        **kwargs,
-    ):
-        self.__parse__(locals())
-        self._obs_cols = adata.obs.columns.tolist()
 
     def on_test_train(self):
         """
