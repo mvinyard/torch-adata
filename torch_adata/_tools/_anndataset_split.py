@@ -10,11 +10,13 @@ __version__ = "0.0.17"
 
 
 # -- import packages: --------------------------------------------------------------------
-from abc import ABC, abstractmethod
-from .._core._AnnDataset import AnnDataset
-from ._split import split
 import anndata
 import inspect
+
+
+# -- import local dependencies: ----------------------------------------------------------
+from .._core._AnnDataset import AnnDataset
+from ._split import split
 
 
 # -- supporting functions: ---------------------------------------------------------------
@@ -32,7 +34,7 @@ def extract_func_kwargs(func, kwargs):
 
 
 # -- API-facing class: -------------------------------------------------------------------
-class AnnDatasetSplit(BaseAnnDatasetSplitter):
+class AnnDatasetSplit:
     def __parse__(self, kwargs, ignore=["self"]):
         self.kwargs = {}
         for k, v in kwargs.items():
