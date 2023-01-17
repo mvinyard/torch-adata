@@ -6,16 +6,15 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
 # -- import packages: --------------------------------------------------------------------
+import numpy as np
 import torch
 
 
 # -- supporting functions: ---------------------------------------------------------------
-def uniform_group_sizes(
-    dataset: torch.utils.data.Dataset, n_groups: int = 2
-) -> list([int, "...", int]):
-    """Split dataset length with even proportions according to number of groups"""
-
-    div, mod = divmod(len(dataset), n_groups)
+"""Split dataset length with even proportions according to number of groups"""
+def uniform_group_sizes(n_cells: int, n_groups: int = 2):
+    """Split groups based on number of cells and groups."""
+    div, mod = divmod(n_cells, n_groups)
     return [div] * (n_groups - 1) + [div + mod]
 
 
@@ -25,12 +24,13 @@ def proportioned_group_sizes(
     remainder_idx: int = -1,
 ) -> list([int, "...", int]):
     """Split dataset length with specified proportions/number of groups"""
+    
+    n_cells = len(dataset)
     n_groups = len(percentages)
-    if sum(percentages) < 1:
-        percentages.append(round(1 - sum(percentages), 5))
+    percentages = sum_norm(np.array(percentages))
 
-    split_lengths = [int(len(dataset) * pct_i) for pct_i in percentages]
-    remainder = len(dataset) - sum(split_lengths)
+    split_lengths = [int(n_cells * pct_i) for pct_i in percentages]
+    remainder = n_cells - sum(split_lengths)
     split_lengths[remainder_idx] += remainder
 
     return split_lengths
