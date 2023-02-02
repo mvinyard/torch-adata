@@ -132,6 +132,8 @@ def fetch_from_grouped_adata(
     aux_keys: list([str, "...", str]),
     attr_names: list([str, "...", str]),
     one_hot: list([bool, "...", bool]),
+    sampling_replacement=True,
+    sampling_weights=None,
 ):
     """
     Fetch both X and ancilliary obs data from a grouped anndata object.
@@ -162,7 +164,12 @@ def fetch_from_grouped_adata(
     X, obs_stacked
     """
     # -- (1) group adata.obs by key, then pad dataset indices: ---------------------------
-    idx_dict, groups = group_and_pad_adata(adata, groupby)
+    idx_dict, groups = group_and_pad_adata(
+        adata,
+        groupby,
+        sampling_replacement=sampling_replacement,
+        sampling_weights=sampling_weights,
+    )
         
     # -- (2) create receptacles for stacked data: ----------------------------------------
     X_list = []
@@ -219,6 +226,10 @@ class Fetch:
 
         self.adata = adata
         self.obs_df = adata.obs
+        
+        if 'taW' in adata.obs.columns:
+            self.sampling_weights = adata.obs['taW'].values
+            print("doing weighted sampling...1")
 
     def X(self, use_key):
         """Fetch X"""
@@ -234,13 +245,36 @@ class Fetch:
             self.adata, obs_keys, attr_names, one_hot
         )
 
-    def grouped_adata(self, groupby, use_key, obs_keys, aux_keys, attr_names, one_hot):
+    def grouped_adata(
+        self,
+        groupby,
+        use_key,
+        obs_keys,
+        aux_keys,
+        attr_names,
+        one_hot,
+        sampling_weight_key,
+    ):
         """
         Fetch X and/or multiple cols from obs using a groupby
         accessor for adata.obs
         """
+        
+        if isinstance(sampling_weight_key, str) and (sampling_weight_key in self.adata.obs.columns):
+            sampling_weights =  self.adata.obs[sampling_weight_key].values
+        else:
+            sampling_weights = None
+        
         return fetch_from_grouped_adata(
-            self.adata, groupby, use_key, obs_keys, aux_keys, attr_names, one_hot
+            self.adata,
+            groupby,
+            use_key,
+            obs_keys,
+            aux_keys,
+            attr_names,
+            one_hot,
+            sampling_replacement=True,
+            sampling_weights=sampling_weights,
         )
 
     def update_obs_attrs(self, dataset, obs_data):

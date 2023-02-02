@@ -140,6 +140,7 @@ def register_init(
     attr_names,
     one_hot,
     silent,
+    sampling_weight_key=None,
 ):
     """
     Register passed inputs to AnnDataset class.
@@ -171,6 +172,7 @@ def register_init(
             aux_keys=attr_keys["aux"],
             attr_names=attr_names,
             one_hot=one_hot,
+            sampling_weight_key=sampling_weight_key,
         )
         fetch.update_attrs(dataset, obs_data, aux_data)
 

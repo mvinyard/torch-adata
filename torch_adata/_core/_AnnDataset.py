@@ -32,6 +32,7 @@ class AnnDataset(Dataset):
         one_hot: list([bool, "...", bool]) = False,
         aux_keys: list([str, "...", str]) = None,
         silent: bool =False,
+        sampling_weight_key=None,
     )->None:
         
         """
@@ -80,6 +81,7 @@ class AnnDataset(Dataset):
             attr_names,
             one_hot,
             silent,
+            sampling_weight_key=sampling_weight_key,
         )
 
     def __len__(self):

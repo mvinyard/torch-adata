@@ -30,7 +30,7 @@ def max_len(grouped_idx: dict) -> int:
 
 
 def _sample_indices_for_padding(
-    grouped_idx: dict, sampling_replacement: bool = True
+    grouped_idx: dict, sampling_replacement: bool = True, sampling_weights=None
 ) -> dict:
 
     """
@@ -54,14 +54,16 @@ def _sample_indices_for_padding(
     for group, group_idx in grouped_idx.items():
         n_pad = max_len(grouped_idx) - group_idx.shape[0]
         if n_pad:
+            p_ = sampling_weights[group_idx]
+            p = p_ / p_.sum()
             group_padding[group] = np.random.choice(
-                group_idx, size=n_pad, replace=sampling_replacement
+                group_idx, size=n_pad, replace=sampling_replacement, p=p
             )
 
     return group_padding
 
 
-def _pad_indices(grouped_idx: dict) -> dict:
+def _pad_indices(grouped_idx: dict, sampling_replacement=True, sampling_weights=None) -> dict:
 
     """
     Parameters:
@@ -76,7 +78,11 @@ def _pad_indices(grouped_idx: dict) -> dict:
     ------
     """
 
-    padding_idx = _sample_indices_for_padding(grouped_idx)
+    padding_idx = _sample_indices_for_padding(
+        grouped_idx,
+        sampling_replacement,
+        sampling_weights,
+    )
 
     for group, group_pad_idx in padding_idx.items():
         grouped_idx[group] = np.concatenate([grouped_idx[group], group_pad_idx])
@@ -84,7 +90,7 @@ def _pad_indices(grouped_idx: dict) -> dict:
     return grouped_idx
 
 
-def group_and_pad_adata(adata: anndata.AnnData, groupby: str) -> dict:
+def group_and_pad_adata(adata: anndata.AnnData, groupby: str, sampling_replacement=True, sampling_weights=None) -> dict:
 
     """
     Parameters:
@@ -102,7 +108,7 @@ def group_and_pad_adata(adata: anndata.AnnData, groupby: str) -> dict:
     """
 
     grouped = adata.obs.groupby(groupby)
-    idx = _pad_indices(grouped.indices)
+    idx = _pad_indices(grouped.indices, sampling_replacement=True, sampling_weights=sampling_weights)
     groups = torch.Tensor(list(grouped.groups.keys()))
 
     return idx, groups
