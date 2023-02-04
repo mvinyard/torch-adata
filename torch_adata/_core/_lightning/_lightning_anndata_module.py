@@ -82,6 +82,12 @@ class LightningAnnDataModule(LightningDataModule):
         return AnnDataset(adata=adata, **self.AnnDatasetKWARGS)
     
     def _return_loader(self, dataset_key):
+        
+        if dataset_key == "train":
+            shuffle=self.hparams["shuffle"]
+        else:
+            shuffle = False
+            
         if dataset_key == "test":
             if not hasattr(self, "n_test_cells"):
                 self.setup(stage="test")
@@ -92,7 +98,7 @@ class LightningAnnDataModule(LightningDataModule):
         return torch.utils.data.DataLoader(getattr(self, "{}_dataset".format(dataset_key)),
                           num_workers=self.hparams["num_workers"],
                           batch_size=batch_size,
-                          shuffle=self.hparams["shuffle"]
+                          shuffle=shuffle,
                          )
 
     # -- adata properties: -----------------------------------------------------

@@ -226,10 +226,6 @@ class Fetch:
 
         self.adata = adata
         self.obs_df = adata.obs
-        
-        if 'taW' in adata.obs.columns:
-            self.sampling_weights = adata.obs['taW'].values
-            print("doing weighted sampling...1")
 
     def X(self, use_key):
         """Fetch X"""

@@ -14,6 +14,10 @@ import numpy as np
 import anndata
 import torch
 
+
+NoneType = type(None)
+
+
 def max_len(grouped_idx: dict) -> int:
     """
     Return the max len grouped index. Should match the dataset.__len__() attribute.
@@ -54,8 +58,11 @@ def _sample_indices_for_padding(
     for group, group_idx in grouped_idx.items():
         n_pad = max_len(grouped_idx) - group_idx.shape[0]
         if n_pad:
-            p_ = sampling_weights[group_idx]
-            p = p_ / p_.sum()
+            if not isinstance(sampling_weights, NoneType):
+                p_ = sampling_weights[group_idx]
+                p = p_ / p_.sum()
+            else:
+                p = None
             group_padding[group] = np.random.choice(
                 group_idx, size=n_pad, replace=sampling_replacement, p=p
             )
