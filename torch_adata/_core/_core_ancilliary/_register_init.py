@@ -7,10 +7,6 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.19"
-
-
 # -- import packages: --------------------------------------------------------------------
 from ._fetch_data import Fetch
 from ._identity_msg import identity_msg
