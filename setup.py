@@ -5,25 +5,24 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.17"
+# -- specify package version: --------------------------------------------------
+__version__ = "0.0.18"
 
 
-# -- import packages: --------------------------------------------------------------------
+# -- import packages: ----------------------------------------------------------
 import setuptools
 import re
 import os
 import sys
 
 
-# -- run setup: --------------------------------------------------------------------------
-
+# -- run setup: ----------------------------------------------------------------
 setuptools.setup(
     name="torch-adata",
-    version="0.0.18rc0",
+    version="0.0.18",
     python_requires=">3.7.0",
-    author="Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
-    author_email="mvinyard@broadinstitute.org",
+    author="Michael E. Vinyard",
+    author_email="mvinyard@g.harvard.edu",
     url=None,
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",

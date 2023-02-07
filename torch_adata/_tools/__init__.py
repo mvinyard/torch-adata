@@ -5,11 +5,11 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- specify version: --------------------------------------------------------------------
-__version__ = "0.0.16"
+# -- specify package version: --------------------------------------------------
+__version__ = "0.0.18"
 
 
-# -- import ancilliary functions: --------------------------------------------------------
+# -- import ancilliary functions: ----------------------------------------------
 from ._split import split
 from ._idx import idx
 from ._dummy_batch import dummy_batch
