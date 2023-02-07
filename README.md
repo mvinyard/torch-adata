@@ -1,4 +1,4 @@
-# ![torch-adata-logo](/docs/imgs/torch-adata.logo.large.svg)
+# ![torch-adata-logo](/docs/imgs/torch-adata.logo.github.png)
 
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/torch-adata.svg)](https://pypi.python.org/pypi/torch-adata/)
 [![PyPI version](https://badge.fury.io/py/torch-adata.svg)](https://badge.fury.io/py/torch-adata)
@@ -24,6 +24,7 @@ pip install -e .
 
 The primary class is the [`AnnDataset`](https://github.com/mvinyard/torch-adata/blob/main/torch_adata/_core/_AnnDataset.py). This is a subclass of the widely-used [`torch.utils.data.Dataset`](https://pytorch.org/tutorials/beginner/basics/data_tutorial.html). The PyTorch `Dataset` module enables us to take advantage of built-in multiprocessing and other organizational tricks that ultimately standardize workflows and enable reproducibility.
 
+![torch-adata-concept-overview](/docs/imgs/torch-adata.concept_overview.png)
 
 ```python
 import anndata as a
