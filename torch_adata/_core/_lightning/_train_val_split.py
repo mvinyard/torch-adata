@@ -82,6 +82,7 @@ class TrainValSplit(AutoParseBase):
 
     @property
     def train_cells(self):
+
         train_idx = np.random.choice(
             range(len(self.original_train_idx)), size=self.n_train, replace=False
         )
@@ -96,7 +97,7 @@ class TrainValSplit(AutoParseBase):
         If validation key is not found, invoke this function. Takes the train subset
         adata and breaks it into non-overlapping train and validation adata subsets.
         """
-
+        
         self.n_fit = train_adata.shape[0]
         self.n_train = train_adata.shape[0]
         self.original_train_idx = train_adata.obs.index
@@ -122,9 +123,9 @@ class TrainValSplit(AutoParseBase):
 
         self.adata.obs = processed_df
 
-    def configure_validation(self, train_adata):
+    def configure_validation(self, train_adata, force_reallocate=False):
         """configure train-val split if it has train but not val"""
-        if self.has_train_not_val:
+        if self.has_train_not_val or force_reallocate:
             self.allocate_validation(train_adata)
         
         return self.data_keys

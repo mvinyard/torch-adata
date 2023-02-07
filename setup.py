@@ -20,8 +20,8 @@ import sys
 
 setuptools.setup(
     name="torch-adata",
-    version="0.0.17rc4",
-    python_requires=">3.6.0",
+    version="0.0.18rc0",
+    python_requires=">3.7.0",
     author="Michael E. Vinyard - Harvard University - Massachussetts General Hospital - Broad Institute of MIT and Harvard",
     author_email="mvinyard@broadinstitute.org",
     url=None,
@@ -37,7 +37,7 @@ setuptools.setup(
     ],
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
-        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Intended Audience :: Science/Research",
         "Topic :: Scientific/Engineering :: Bio-Informatics",
     ],

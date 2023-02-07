@@ -13,7 +13,6 @@ from ._train_val_split import TrainValSplit
 from ._configure_adata import configure_adata
 
 
-
 class LightningAnnDataModule(LightningDataModule):
     def __init__(
         self,
@@ -22,6 +21,7 @@ class LightningAnnDataModule(LightningDataModule):
         batch_size=2000,
         num_workers=os.cpu_count(),
         train_val_split=[0.8, 0.2],
+        n_predict=2000,
         use_key="X_pca",
         groupby="Time point",  # TODO: make optional
         train_key="train",
@@ -59,12 +59,14 @@ class LightningAnnDataModule(LightningDataModule):
             self._format_adata_obs_index()
 
     def configure_train_val_split(self):
+        
         train_val_split = TrainValSplit(
             self.adata, self.data_keys, self.hparams["train_val_split"]
         )
-        self._data_keys = train_val_split.configure_validation(self.train_adata)
-
+        self._data_keys = train_val_split.configure_validation(self.init_train_adata, force_reallocate=True)
+        
     def subset_adata(self, key: str):
+        
         self.df = self.adata.obs.copy()
         access_key = self.data_keys[key]
         if not hasattr(self.df, access_key):
@@ -82,6 +84,10 @@ class LightningAnnDataModule(LightningDataModule):
         return AnnDataset(adata=adata, **self.AnnDatasetKWARGS)
     
     def _return_loader(self, dataset_key):
+
+        if dataset_key in ["train", "val"]:
+            # could probably add a flag to make this optional if desired
+            self.configure_train_val_split()
         
         if dataset_key == "train":
             shuffle=self.hparams["shuffle"]
@@ -120,7 +126,7 @@ class LightningAnnDataModule(LightningDataModule):
     @property
     def n_cells(self):
         return self.adata.shape[0]
-
+    
     @property
     def n_features(self):
         return self.adata.shape[1]
@@ -134,6 +140,14 @@ class LightningAnnDataModule(LightningDataModule):
                 if attr.endswith("key")
             }
         return self._data_keys
+    
+    @property
+    def init_train_adata(self):
+        # preserve the original set of fitting data
+        # we only want to set this once
+        if not hasattr(self, "_init_train_adata"):
+            self._init_train_adata = self.subset_adata("train")
+        return self._init_train_adata
 
     @property
     def train_adata(self):
@@ -149,6 +163,7 @@ class LightningAnnDataModule(LightningDataModule):
 
     @property
     def predict_adata(self):
+        
         return self.subset_adata("predict")
 
     # -- dataset properties: ---------------------------------------------------
@@ -189,7 +204,7 @@ class LightningAnnDataModule(LightningDataModule):
     def test_dataloader(self):
         return self._return_loader("test")
 
-    def predict_dataloader(self):
+    def predict_dataloader(self):        
         return self._return_loader("predict")
 
     def __repr__(self):

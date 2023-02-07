@@ -86,6 +86,10 @@ class AnnDataset(Dataset):
 
     def __len__(self):
         return self.X.shape[self._data_axis]
+    
+    @property
+    def n_dims(self):
+        return self.X.shape[-1]
 
     def __getitem__(self, idx):
         return core.return_data_on_axis(self, idx)
