@@ -6,7 +6,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
 # -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.17"
+__version__ = "0.0.19"
 
 
 # -- import packages: --------------------------------------------------------------------
@@ -32,6 +32,7 @@ class AnnDataset(Dataset):
         one_hot: list([bool, "...", bool]) = False,
         aux_keys: list([str, "...", str]) = None,
         silent: bool =False,
+        sampling_weight_key=None,
     )->None:
         
         """
@@ -80,10 +81,15 @@ class AnnDataset(Dataset):
             attr_names,
             one_hot,
             silent,
+            sampling_weight_key=sampling_weight_key,
         )
 
     def __len__(self):
         return self.X.shape[self._data_axis]
+    
+    @property
+    def n_dims(self):
+        return self.X.shape[-1]
 
     def __getitem__(self, idx):
         return core.return_data_on_axis(self, idx)

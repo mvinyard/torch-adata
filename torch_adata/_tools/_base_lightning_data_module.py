@@ -5,20 +5,22 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.17"
+# -- specify package version: --------------------------------------------------
+__version__ = "0.0.19"
 
 
-# -- import packages: --------------------------------------------------------------------
+# -- import native modules: ----------------------------------------------------
 from abc import ABC, abstractmethod
 import os
 
+
+# -- import packages: ----------------------------------------------------------
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader
 import anndata
 
 
-# -- Primary module class: ---------------------------------------------------------------
+# -- main module class: --------------------------------------------------------
 class BaseLightningDataModule(ABC, LightningDataModule):
     def __init__(
         self,

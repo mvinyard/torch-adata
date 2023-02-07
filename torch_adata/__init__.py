@@ -5,14 +5,15 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.17"
+# -- specify package version: --------------------------------------------------
+__version__ = "0.0.19"
 
 
-# -- import modules: ---------------------------------------------------------------------
+# -- import modules: -----------------------------------------------------------
 from ._core._AnnDataset import AnnDataset
+from ._core._lightning._lightning_anndata_module import LightningAnnDataModule
 from . import _tools as tl
 
 
-# -- import API-hidden core modules (for dev): -------------------------------------------
+# -- import API-hidden core modules (for dev): ---------------------------------
 from ._core import _core_ancilliary as _core

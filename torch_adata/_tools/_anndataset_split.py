@@ -1,25 +1,25 @@
 
-__module_name__ = "_anndataset_split.py"
+__module_name__ = "__init__.py"
 __doc__ = """Aux. module to organize AnnData/torch datasets into test/val/train subsets."""
 __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.17"
+# -- specify package version: --------------------------------------------------
+__version__ = "0.0.19"
 
 
-# -- import packages: --------------------------------------------------------------------
+# -- import packages: ----------------------------------------------------------
 import anndata
 import inspect
 
 
-# -- import local dependencies: ----------------------------------------------------------
+# -- import local dependencies: ------------------------------------------------
 from .._core._AnnDataset import AnnDataset
 from ._split import split
 
 
-# -- supporting functions: ---------------------------------------------------------------
+# -- supporting functions: -----------------------------------------------------
 def func_params(func):
     return list(inspect.signature(func).parameters.keys())
 
@@ -33,7 +33,7 @@ def extract_func_kwargs(func, kwargs):
     return func_kwargs
 
 
-# -- API-facing class: -------------------------------------------------------------------
+# -- API-facing class: ---------------------------------------------------------
 class AnnDatasetSplit:
     def __parse__(self, kwargs, ignore=["self"]):
         self.kwargs = {}

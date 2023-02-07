@@ -5,12 +5,16 @@ __author__ = ", ".join(["Michael E. Vinyard"])
 __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
-# -- import packages: --------------------------------------------------------------------
+# -- specify package version: --------------------------------------------------
+__version__ = "0.0.19"
+
+
+# -- import packages: ----------------------------------------------------------
 import numpy as np
 import torch
 
 
-# -- supporting functions: ---------------------------------------------------------------
+# -- supporting functions: -----------------------------------------------------
 """Split dataset length with even proportions according to number of groups"""
 def uniform_group_sizes(n_cells: int, n_groups: int = 2):
     """Split groups based on number of cells and groups."""
@@ -78,4 +82,5 @@ def split(
     (1) Uses the torch.utils.data.random_split function to actually do the split.
     """
     split_lengths = calculate_split_lengths(dataset, n_groups, percentages)
+    
     return torch.utils.data.random_split(dataset, lengths=split_lengths)
