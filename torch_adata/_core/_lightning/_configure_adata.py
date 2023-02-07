@@ -1,9 +1,28 @@
-import pandas as pd
-import anndata, os
 
+__module_name__ = "_configure_adata.py"
+__doc__ = """Module to configure AnnData within LightningDataModule"""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.19"
+
+
+# -- import packages: --------------------------------------------------------------------
+import pandas as pd
+import anndata
+
+
+# -- import python natives: --------------------------------------------------------------
+import os
+
+
+# -- import local dependencies: ----------------------------------------------------------
 from ._auto_parse_base_class import AutoParseBase
 
 
+# -- Main class: -------------------------------------------------------------------------
 class AnnDataConfig(AutoParseBase):
     def __init__(self, adata=None, h5ad_path=None):
         
@@ -49,7 +68,9 @@ class AnnDataConfig(AutoParseBase):
                 
         if not self.properly_formatted_index:
             self.format_obs_index()
-        
+
+
+# -- API-facing function: ----------------------------------------------------------------
 def configure_adata(adata=None, h5ad_path:str = None):
     
     config = AnnDataConfig(adata=adata, h5ad_path=h5ad_path)

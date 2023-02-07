@@ -1,18 +1,34 @@
 
+__module_name__ = "_lightning_anndata_module.py"
+__doc__ = """Module for LightningAnnDataModule."""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.19"
+
+
+# -- import python natives: --------------------------------------------------------------
+import os
+
+
+# -- import packages: --------------------------------------------------------------------
 from pytorch_lightning import LightningDataModule
 from licorice_font import font_format
 import pandas as pd
 import anndata
 import torch
-import os
 
 
+# -- import local dependencies: ----------------------------------------------------------
 from .._AnnDataset import AnnDataset
 from ._function_kwargs import function_kwargs
 from ._train_val_split import TrainValSplit
 from ._configure_adata import configure_adata
 
 
+# -- Main module class: ------------------------------------------------------------------
 class LightningAnnDataModule(LightningDataModule):
     def __init__(
         self,

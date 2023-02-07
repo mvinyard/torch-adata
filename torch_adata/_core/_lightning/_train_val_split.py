@@ -1,8 +1,26 @@
 
-from ._auto_parse_base_class import AutoParseBase
-import numpy as np
+__module_name__ = "_train_val_split.py"
+__doc__ = """Split train / val data."""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.19"
+
+
+# -- import python natives: --------------------------------------------------------------
 from typing import Union, List
 
+
+# -- import packages: --------------------------------------------------------------------
+import numpy as np
+
+# -- import local dependencies: ----------------------------------------------------------
+from ._auto_parse_base_class import AutoParseBase
+
+
+# -- Supporting class: -------------------------------------------------------------------
 class SplitSize:
     def __init__(self, n_cells: int, n_groups: int):
 
@@ -25,6 +43,8 @@ class SplitSize:
 
         return split_lengths
 
+
+# -- Main module class: ------------------------------------------------------------------
 class TrainValSplit(AutoParseBase):
     def __init__(
         self,

@@ -6,7 +6,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
 # -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.17"
+__version__ = "0.0.19"
 
 
 # -- import AnnDataset-facing functions: -------------------------------------------------
@@ -22,4 +22,10 @@ from ._identity_msg import identity_msg
 
 
 # -- import data util functions: ---------------------------------------------------------
-from ._data_typing import is_numpy_array, is_pandas_categorical, to_np_array, tensorize, as_list
+from ._data_typing import (
+    is_numpy_array,
+    is_pandas_categorical,
+    to_np_array,
+    tensorize,
+    as_list,
+)

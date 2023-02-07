@@ -1,4 +1,13 @@
 
+__module_name__ = "_auto_parse_base_class.py"
+__doc__ = """Module for AutoParseBase."""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.19"
+
 
 # -- import packages: --------------------------------------------------------------------
 from abc import ABC

@@ -1,9 +1,20 @@
 
-# -- import packages: --------------------------------------------------------------------
+__module_name__ = "_function_kwargs.py"
+__doc__ = """Module to configure AnnData within LightningDataModule"""
+__author__ = ", ".join(["Michael E. Vinyard"])
+__email__ = ", ".join(["vinyard@g.harvard.edu"])
+
+
+# -- specify package version: ------------------------------------------------------------
+__version__ = "0.0.19"
+
+
+# -- import python natives: --------------------------------------------------------------
 from typing import Union, Dict, List
 import inspect
 
 
+# -- functions: --------------------------------------------------------------------------
 def _extract_func_params(func):
     return list(inspect.signature(func).parameters.keys())
 

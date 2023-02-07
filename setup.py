@@ -6,7 +6,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
 # -- specify package version: --------------------------------------------------
-__version__ = "0.0.18"
+__version__ = "0.0.19"
 
 
 # -- import packages: ----------------------------------------------------------
@@ -19,7 +19,7 @@ import sys
 # -- run setup: ----------------------------------------------------------------
 setuptools.setup(
     name="torch-adata",
-    version="0.0.18",
+    version="0.0.19",
     python_requires=">3.7.0",
     author="Michael E. Vinyard",
     author_email="mvinyard@g.harvard.edu",
