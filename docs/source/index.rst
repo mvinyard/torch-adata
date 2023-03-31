@@ -65,7 +65,7 @@ to install the development version:
 
    This project is under active development.
    
-A bit about me
+About the developer (Michael Vinyard)
 --------------
 I'm currently working on my PhD at Harvard University where I am developing methods for the analysis of single-cell genomics data. I also work on methods for CRISPR-Cas9-based genome-editing tools (like base-editing) to study cancer progression. My PhD work is funded by an NIH F31 award through the NCI and focuses on applying innovations in deep learning to analogous problems in the analysis of single-cell data.
 
