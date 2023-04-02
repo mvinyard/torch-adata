@@ -23,6 +23,7 @@ from ._function_kwargs import function_kwargs
 from ._train_val_split import TrainValSplit
 from ._configure_adata import configure_adata
 
+from .._core_ancilliary import Fetch
 
 # -- Main module class: ------------------------------------------------------------------
 class LightningAnnDataModule(LightningDataModule):
@@ -142,6 +143,10 @@ class LightningAnnDataModule(LightningDataModule):
     @property
     def n_features(self):
         return self.adata.shape[1]
+    
+    @property
+    def n_dims(self):
+        return Fetch(self.adata).X(use_key=self._use_key).shape[-1]
 
     @property
     def data_keys(self):
