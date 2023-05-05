@@ -10,7 +10,7 @@ import os
 
 
 # -- import packages: --------------------------------------------------------------------
-from pytorch_lightning import LightningDataModule
+from lightning import LightningDataModule
 from licorice_font import font_format
 import pandas as pd
 import anndata
