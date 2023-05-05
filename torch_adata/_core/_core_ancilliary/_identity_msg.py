@@ -26,7 +26,14 @@ def _groupby_msg(dataset):
     if not dataset._grouped_by:
         return
     msg_g1 = lf.font_format("Grouped by", ["BOLD"])
-    msg_g2 = lf.font_format(dataset._grouped_by, ["RED"])
+    if isinstance(dataset._grouped_by, list):
+        sub_g1 = []
+        for gb in dataset._grouped_by:
+            sub_g1.append(lf.font_format(gb, ["RED"]))
+            msg_g2 = "-".join(sub_g1)
+    else:
+        msg_g2 = lf.font_format(dataset._grouped_by, ["RED"])
+                  
     return "{}: '{}' with attributes:".format(msg_g1, msg_g2)
 
 def annotate_attr_size(dataset, attr_name_set):

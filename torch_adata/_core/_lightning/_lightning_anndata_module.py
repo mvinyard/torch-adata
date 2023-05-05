@@ -10,7 +10,7 @@ import os
 
 
 # -- import packages: --------------------------------------------------------------------
-from pytorch_lightning import LightningDataModule
+from lightning import LightningDataModule
 from licorice_font import font_format
 import pandas as pd
 import anndata
@@ -35,7 +35,8 @@ class LightningAnnDataModule(LightningDataModule):
         train_val_split=[0.8, 0.2],
         n_predict=2000,
         use_key="X_pca",
-        groupby="Time point",  # TODO: make optional
+        obs_keys=[],
+        groupby=None,
         train_key="train",
         val_key="val",
         test_key="test",
