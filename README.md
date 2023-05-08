@@ -9,7 +9,7 @@ Create [`PyTorch Datasets`](https://pytorch.org/tutorials/beginner/basics/data_t
 
 ## Installation
 
-Install from PYPI (current version: **[`0.0.20`](https://pypi.org/project/torch-adata/)**):
+Install from PYPI (current version: **[`0.0.22`](https://pypi.org/project/torch-adata/)**):
 ```BASH
 pip install torch-adata
 ```
