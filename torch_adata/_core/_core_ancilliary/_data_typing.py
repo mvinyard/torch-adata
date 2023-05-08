@@ -9,6 +9,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 import numpy
 import pandas
 import torch
+import scipy
 
 
 # -- data type handlers: -----------------------------------------------------------------
@@ -46,6 +47,23 @@ def is_pandas_categorical(x_arr) -> bool:
     return x_arr.__class__ is pandas.Categorical
 
 
+def is_scipy_sparse(x_arr):
+    """
+    Inspects and indicates if input is a subclass of: scipy.sparse.spmatrix, the base class for all scipy sparse matrices.
+
+    Parameters:
+    -----------
+    x_arr
+        type: unknown
+
+    Returns:
+    --------
+    indicator
+        type: bool
+    """
+    return isinstance(x_arr, scipy.sparse.spmatrix)
+
+
 def to_np_array(x_arr) -> numpy.ndarray:
     """
     Inspects input. If input is not, numpy.ndarray, it is transformed to numpy.ndarray.
@@ -62,6 +80,8 @@ def to_np_array(x_arr) -> numpy.ndarray:
     """
     if is_numpy_array(x_arr):
         return x_arr
+    if is_scipy_sparse(x_arr):
+        return x_arr.toarray()
     if is_pandas_categorical(x_arr):
         return x_arr.to_numpy()
     return x_arr.toarray()
