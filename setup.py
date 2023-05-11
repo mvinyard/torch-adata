@@ -15,7 +15,7 @@ import sys
 # -- run setup: ----------------------------------------------------------------
 setuptools.setup(
     name="torch-adata",
-    version="0.0.23rc0",
+    version="0.0.23",
     python_requires=">3.9.0",
     author="Michael E. Vinyard",
     author_email="mvinyard@g.harvard.edu",
