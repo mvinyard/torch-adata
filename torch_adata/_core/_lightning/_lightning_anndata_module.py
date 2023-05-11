@@ -13,6 +13,7 @@ import os
 from lightning import LightningDataModule
 from licorice_font import font_format
 import pandas as pd
+import numpy as np
 import anndata
 import torch
 
@@ -42,6 +43,7 @@ class LightningAnnDataModule(LightningDataModule):
         test_key="test",
         predict_key="predict",
         shuffle=True,
+        shuffle_time_labels = False,
         silent=True,
         **kwargs,
     ):
@@ -78,8 +80,7 @@ class LightningAnnDataModule(LightningDataModule):
         )
         self._data_keys = train_val_split.configure_validation(self.init_train_adata, force_reallocate=True)
         
-    def subset_adata(self, key: str):
-        
+    def subset_adata(self, key: str):        
         self.df = self.adata.obs.copy()
         access_key = self.data_keys[key]
         if not hasattr(self.df, access_key):
@@ -96,17 +97,33 @@ class LightningAnnDataModule(LightningDataModule):
         adata = getattr(self, "{}_adata".format(key))
         return AnnDataset(adata=adata, **self.AnnDatasetKWARGS)
     
+    def shuffle_time_labels(self):
+        
+        df = self._adata.obs.copy()
+        non_t0 = df.loc[df['t'] != 0]['t']
+        
+        shuffled_t = np.zeros(len(df))
+        shuffled_t[non_t0.index.astype(int)] = np.random.choice(non_t0.values, len(non_t0))
+        self._adata.obs["t"] = shuffled_t
+
     def _return_loader(self, dataset_key):
 
         if dataset_key in ["train", "val"]:
             # could probably add a flag to make this optional if desired
+            # these happen every time the loader is called, which is useful when
+            # you want to shuffle the organization of labels.
+            # maybe a better way to do it.... 
             self.configure_train_val_split()
-        
+            
+            if self.hparams["shuffle_time_labels"]:
+                self.shuffle_time_labels()
+                
         if dataset_key == "train":
             shuffle=self.hparams["shuffle"]
         else:
-            shuffle = False
-            
+            shuffle = shuffle_labels = False
+                    
+
         if dataset_key == "test":
             if not hasattr(self, "n_test_cells"):
                 self.setup(stage="test")
