@@ -7,7 +7,7 @@ class InfoMessage:
     def _format_msg_title(self, INFO):
         return f" - [{INFO}] | "
 
-    def __call__(self, msg):
+    def __call__(self, msg, end = "\n"):
 
         self.BASE = self._format_msg_title(self.INFO)
-        print(self.BASE + msg)
+        print(self.BASE + msg, end = end)

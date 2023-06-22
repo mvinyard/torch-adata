@@ -31,7 +31,11 @@ class PlotUMAP(utils.ABCParse):
         return self.adata.uns[self._cmap_key]
 
     def _plot_grouped(self):
-        for group, group_df in self.adata.obs.groupby(self.groupby):
+        for en, (group, group_df) in enumerate(self.adata.obs.groupby(self.groupby)):
+            if group in self.plot_behind:
+                z = 0
+            else:
+                z = en + 1
             xu = self.adata[group_df.index].obsm[self._use_key]
             self.axes[0].scatter(
                 xu[:, 0],
@@ -39,6 +43,7 @@ class PlotUMAP(utils.ABCParse):
                 label=group,
                 color=self.CMAP[group],
                 alpha=self._alpha,
+                zorder = z,
             )
 
     def _format(self):
@@ -51,6 +56,7 @@ class PlotUMAP(utils.ABCParse):
     def __call__(
         self,
         groupby=None,
+        plot_behind = ["Undifferentiated"],
     ):
         self.__update__(locals())
 
