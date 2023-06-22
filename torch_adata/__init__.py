@@ -6,7 +6,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 
 
 # -- specify package version: --------------------------------------------------
-__version__ = "0.0.24rc1"
+__version__ = "0.0.24rc2"
 
 
 # -- import modules: -----------------------------------------------------------
