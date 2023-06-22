@@ -15,7 +15,7 @@ import sys
 # -- run setup: ----------------------------------------------------------------
 setuptools.setup(
     name="torch-adata",
-    version="0.0.24rc0",
+    version="0.0.24rc1",
     python_requires=">3.9.0",
     author="Michael E. Vinyard",
     author_email="mvinyard.ai@gmail.com",
@@ -29,7 +29,7 @@ setuptools.setup(
         "licorice_font>=0.0.3",
         "lightning>=2.0.1",
         "torch>=2.0",
-        "numpy==1.24",
+        "numpy==1.23",
         "scanpy==1.9.3",
         "scikit-learn==1.2.2",
         "webfiles",
