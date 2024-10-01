@@ -31,7 +31,7 @@ setuptools.setup(
         "torch>=2.0",
 #         "numpy==1.23",
         "scanpy==1.9.3",
-        "scikit-learn==1.2.2",
+        "scikit-learn>=1.2.2",
         "webfiles",
 	"vinplots",
     ],
