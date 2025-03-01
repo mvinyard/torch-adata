@@ -11,7 +11,6 @@ import os
 
 # -- import packages: --------------------------------------------------------------------
 from lightning import LightningDataModule
-from licorice_font import font_format
 import pandas as pd
 import numpy as np
 import anndata
@@ -238,4 +237,4 @@ class LightningAnnDataModule(LightningDataModule):
         return self._return_loader("predict")
 
     def __repr__(self):
-        return "⚡ {} ⚡".format(font_format("LightningAnnDataModule", ["PURPLE"]))
+        return f"⚡ {self.__class__.__name__} ⚡"

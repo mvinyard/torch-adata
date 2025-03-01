@@ -2,17 +2,12 @@
 __module_name__ = "__init__.py"
 __doc__ = """core __init__ module."""
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu"])
-
-
-# -- specify package version: ------------------------------------------------------------
-__version__ = "0.0.20"
+__email__ = ", ".join(["mvinyard.ai@gmail.com"])
 
 
 # -- import AnnDataset-facing functions: -------------------------------------------------
 from ._register_init import register_init
 from ._return_data_on_axis import return_data_on_axis
-
 
 # -- import key functions: ---------------------------------------------------------------
 from ._fetch_data import Fetch

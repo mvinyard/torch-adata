@@ -2,7 +2,7 @@
 __module_name__ = "_return_data_on_axis.py"
 __doc__ = """Key method for returning stacked data given 'groupby' (or not) arguments."""
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu"])
+__email__ = ", ".join(["mvinyard.ai@gmail.com"])
 
 
 # ----------------------------------------------------------------------------------------

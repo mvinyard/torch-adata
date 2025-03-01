@@ -2,7 +2,7 @@
 __module_name__ = "__init__.py"
 __doc__ = """Main __init__ module."""
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu"])
+__email__ = ", ".join(["mvinyard.ai@gmail.com"])
 
 
 # -- import modules: -----------------------------------------------------------
@@ -13,5 +13,14 @@ from . import _tools as tl
 
 # -- import API-hidden core modules (for dev): ---------------------------------
 from ._core import _core_ancilliary as _core
-from . import _utils
-# from . import _demo
+
+from . import __version__
+
+
+__all__ = [
+    "AnnDataset",
+    "LightningAnnDataModule",
+    "tl",
+    "_core",
+    "__version__",
+]

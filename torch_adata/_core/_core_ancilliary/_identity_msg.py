@@ -2,22 +2,16 @@
 __module_name__ = "_identity_msg.py"
 __doc__ = """Print the identity of the AnnDataset class."""
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu"])
-
-
-# -- import packages: --------------------------------------------------------------------
-import licorice_font as lf
-
+__email__ = ", ".join(["mvinyard.ai@gmail.com"])
 
 # -- import local dependencies: ----------------------------------------------------------
 from ._data_typing import as_list
-
 
 # -- supporting functions: ---------------------------------------------------------------
 def _header_msg(dataset):
     l = len(dataset)
     msg = "[ {}-{} ]: AnnDataset object with {} samples\n{}"
-    t, a = lf.font_format("torch", ["RED", "BOLD"]), lf.font_format("adata", ["PURPLE", "BOLD"])
+    t, a = "torch", "adata" #  lf.font_format("torch", ["RED", "BOLD"]), lf.font_format("adata", ["PURPLE", "BOLD"])
     u = "".join(["-"] * int(48 + len(str(l))))
     return msg.format(t, a, l, u)
 
@@ -25,14 +19,14 @@ def _groupby_msg(dataset):
 
     if not dataset._grouped_by:
         return
-    msg_g1 = lf.font_format("Grouped by", ["BOLD"])
+    msg_g1 = "Grouped by"
     if isinstance(dataset._grouped_by, list):
         sub_g1 = []
         for gb in dataset._grouped_by:
-            sub_g1.append(lf.font_format(gb, ["RED"]))
+            sub_g1.append(gb)
             msg_g2 = "-".join(sub_g1)
     else:
-        msg_g2 = lf.font_format(dataset._grouped_by, ["RED"])
+        msg_g2 = dataset._grouped_by
                   
     return "{}: '{}' with attributes:".format(msg_g1, msg_g2)
 
@@ -47,7 +41,7 @@ def annotate_attr_size(dataset, attr_name_set):
 def _attr_msg(dataset, attr_name_set, title):
     if attr_name_set:
         attr_name_set = annotate_attr_size(dataset, attr_name_set)
-        return " - {:<15}".format(lf.font_format(title + ":", ["BOLD"])) + ", ".join(attr_name_set)
+        return " - {:<15}".format(title + ":") + ", ".join(attr_name_set)
 
 def _all_attr_msg(dataset):
 
@@ -64,7 +58,7 @@ def _all_attr_msg(dataset):
 def _X_msg(dataset, use_key):
     shape = str(dataset.X.shape)
     msg = "{} (use_key = '{}' {})"
-    fmt = lf.font_format(" - X", ["BOLD"])
+    fmt = " - X"
     return msg.format(fmt, use_key, shape)
 
 

@@ -4,7 +4,7 @@ __doc__ = """
           Module for registering all arguments as well as parsing data during the init setup.
           """
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu"])
+__email__ = ", ".join(["mvinyard.ai@gmail.com"])
 
 
 # -- import packages: --------------------------------------------------------------------

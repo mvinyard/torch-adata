@@ -2,7 +2,7 @@
 __module_name__ = "_one_hot_encode.py"
 __doc__ = """sklearn.preprocessing.OneHotEncoder() wrapper module."""
 __author__ = ", ".join(["Michael E. Vinyard"])
-__email__ = ", ".join(["vinyard@g.harvard.edu"])
+__email__ = ", ".join(["mvinyard.ai@gmail.com"])
 
 
 # -- import packages: --------------------------------------------------------------------
