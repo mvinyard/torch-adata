@@ -14,4 +14,4 @@ from . import _tools as tl
 # -- import API-hidden core modules (for dev): ---------------------------------
 from ._core import _core_ancilliary as _core
 from . import _utils
-from . import _demo
+# from . import _demo
