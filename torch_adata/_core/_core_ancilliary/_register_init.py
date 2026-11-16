@@ -11,6 +11,7 @@ __email__ = ", ".join(["vinyard@g.harvard.edu"])
 from ._fetch_data import Fetch
 from ._identity_msg import identity_msg
 from ._data_typing import as_list
+from ._category_vocabularies import build_category_vocabularies
 
 
 # -- supporting functions: ---------------------------------------------------------------
@@ -71,7 +72,7 @@ def register_one_hot_encode(
     if not one_hot:
         return [False for i in range(len(obs_keys))]
     if not isinstance(one_hot, list):
-        return [one_hot]
+        return [one_hot] * len(obs_keys)
     return one_hot
 
 
@@ -137,6 +138,7 @@ def register_init(
     one_hot,
     silent,
     sampling_weight_key=None,
+    category_vocabularies=None,
 ):
     """
     Register passed inputs to AnnDataset class.
@@ -156,7 +158,10 @@ def register_init(
         dataset, obs_keys, aux_keys, attr_names, one_hot
     )
 
-    fetch = Fetch(adata)
+    dataset.category_vocabularies = build_category_vocabularies(
+        adata, attr_keys["obs"], one_hot, category_vocabularies
+    )
+    fetch = Fetch(adata, dataset.category_vocabularies)
 
     if groupby:
         dataset._data_axis = 1
@@ -177,7 +182,7 @@ def register_init(
         dataset._grouped_by = None
         dataset.X = fetch.X(use_key)
         if obs_keys:
-            obs_data = fetch.multi_obs(obs_keys, attr_names, one_hot)
+            obs_data = fetch.multi_obs(attr_keys["obs"], attr_names, one_hot)
             fetch.update_obs_attrs(dataset, obs_data)
         if attr_keys['aux']:
             for name, attr in zip(attr_names['aux'], attr_keys['aux']):

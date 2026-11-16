@@ -29,6 +29,7 @@ class AnnDataset(Dataset):
         aux_keys: list([str, "...", str]) = None,
         silent: bool =False,
         sampling_weight_key=None,
+        category_vocabularies=None,
     )->None:
         
         """
@@ -60,6 +61,14 @@ class AnnDataset(Dataset):
             type: list([str, ..., str])
             default: None
         
+        category_vocabularies
+            Optional mapping of observation keys to ordered category sequences.
+            Missing keys are inferred from all input rows before grouping. The
+            resolved mapping is exposed as ``dataset.category_vocabularies``.
+            Missing categorical labels and labels outside supplied vocabularies
+            raise ValueError. Numeric columns remain numeric unless requested
+            with one_hot or included in this mapping.
+
         silent
             type: bool
             default: False
@@ -78,6 +87,7 @@ class AnnDataset(Dataset):
             one_hot,
             silent,
             sampling_weight_key=sampling_weight_key,
+            category_vocabularies=category_vocabularies,
         )
 
     def __len__(self):
