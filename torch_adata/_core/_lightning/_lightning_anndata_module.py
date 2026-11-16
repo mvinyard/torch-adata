@@ -20,6 +20,7 @@ import torch
 
 # -- import local dependencies: ----------------------------------------------------------
 from .._AnnDataset import AnnDataset
+from .._core_ancilliary._category_vocabularies import build_category_vocabularies
 from ._function_kwargs import function_kwargs
 from ._train_val_split import TrainValSplit
 from ._configure_adata import configure_adata
@@ -198,8 +199,21 @@ class LightningAnnDataModule(LightningDataModule):
 
     # -- dataset properties: ---------------------------------------------------
     @property
+    def category_vocabularies(self):
+        """One schema from all observations, reused without reallocating splits."""
+        if not hasattr(self, "_category_vocabularies"):
+            self._category_vocabularies = build_category_vocabularies(
+                self.adata, self.hparams["obs_keys"],
+                self.hparams.get("one_hot", False),
+                self.hparams.get("category_vocabularies"),
+            )
+        return self._category_vocabularies
+
+    @property
     def AnnDatasetKWARGS(self):
-        return function_kwargs(AnnDataset, self.hparams)
+        kwargs = function_kwargs(AnnDataset, self.hparams)
+        kwargs["category_vocabularies"] = self.category_vocabularies
+        return kwargs
 
     @property
     def train_dataset(self):

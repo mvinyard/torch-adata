@@ -13,7 +13,7 @@ import anndata
 
 # -- import local dependencies: ----------------------------------------------------------
 from ._group_and_pad_adata import group_and_pad_adata
-from ._one_hot_encode import one_hot_encode
+from ._category_vocabularies import build_category_vocabularies, encode_categories
 from ._data_typing import tensorize, to_np_array
 
 
@@ -53,7 +53,8 @@ def fetch_X(adata: anndata.AnnData, use_key: str):
 
 # -- fetch from adata.obs table: ----------------------------------------------------------
 def fetch_from_obs(
-    obs_df: pandas.DataFrame, obs_key: str, one_hot: bool = False
+    obs_df: pandas.DataFrame, obs_key: str, one_hot: bool = False,
+    category_vocabularies=None
 ) -> torch.Tensor:
 
     """
@@ -77,17 +78,22 @@ def fetch_from_obs(
         type: torch.Tensor
     """
 
-    y = to_np_array(obs_df[obs_key].values).reshape(-1, 1)
-
-    if y.dtype == "O" or one_hot:
-        return one_hot_encode(y)[1]
-    return torch.Tensor(y)
+    if category_vocabularies is None:
+        # Direct helper calls also use the same missing/unknown label policy.
+        from types import SimpleNamespace
+        category_vocabularies = build_category_vocabularies(
+            SimpleNamespace(obs=obs_df), [obs_key], one_hot
+        )
+    if obs_key in category_vocabularies:
+        return encode_categories(obs_df[obs_key], category_vocabularies[obs_key], obs_key)
+    return torch.Tensor(obs_df[obs_key].to_numpy().reshape(-1, 1))
 
 
 def fetch_from_multiple_obs_keys(adata: anndata,
                                  obs_keys: list([str, "...", str]),
                                  attr_names: list([str, "...", str]),
                                  one_hot: list([bool, "...", bool]),
+                                 category_vocabularies=None,
                                 ):
 
     """
@@ -114,7 +120,8 @@ def fetch_from_multiple_obs_keys(adata: anndata,
 
     obs_data = {}
     for n, key in enumerate(obs_keys):
-        val = fetch_from_obs(adata.obs, obs_key=key, one_hot=one_hot[n])
+        val = fetch_from_obs(adata.obs, obs_key=key, one_hot=one_hot[n],
+                             category_vocabularies=category_vocabularies)
         obs_data[attr_names["obs"][n]] = val
 
     return obs_data
@@ -130,6 +137,7 @@ def fetch_from_grouped_adata(
     one_hot: list([bool, "...", bool]),
     sampling_replacement=True,
     sampling_weights=None,
+    category_vocabularies=None,
 ):
     """
     Fetch both X and ancilliary obs data from a grouped anndata object.
@@ -159,6 +167,9 @@ def fetch_from_grouped_adata(
     --------
     X, obs_stacked
     """
+    if category_vocabularies is None:
+        category_vocabularies = build_category_vocabularies(adata, obs_keys, one_hot)
+
     # -- (1) group adata.obs by key, then pad dataset indices: ---------------------------
     idx_dict, groups = group_and_pad_adata(
         adata,
@@ -180,7 +191,7 @@ def fetch_from_grouped_adata(
         X_list.append(fetch_X(group_adata, use_key))
         if obs_keys:
             obs_data = fetch_from_multiple_obs_keys(
-                group_adata, obs_keys, attr_names, one_hot
+                group_adata, obs_keys, attr_names, one_hot, category_vocabularies
             )
             for key in obs_dict.keys():
                 obs_dict[key].append(obs_data[key])
@@ -207,7 +218,7 @@ def fetch_from_grouped_adata(
 # -- fetch controller class: -------------------------------------------------------------
 class Fetch:
     """Controller class for various fetching functions."""
-    def __init__(self, adata: anndata.AnnData):
+    def __init__(self, adata: anndata.AnnData, category_vocabularies=None):
 
         """
         Parameters:
@@ -220,6 +231,7 @@ class Fetch:
         None
         """
 
+        self.category_vocabularies = category_vocabularies
         self.adata = adata
         self.obs_df = adata.obs
 
@@ -229,12 +241,12 @@ class Fetch:
 
     def obs(self, obs_key: str, one_hot: bool = False):
         """Fetch a col from obs"""
-        return fetch_from_obs(self.obs_df, obs_key, one_hot)
+        return fetch_from_obs(self.obs_df, obs_key, one_hot, self.category_vocabularies)
 
     def multi_obs(self, obs_keys, attr_names, one_hot):
         """Fetch multiple cols from obs"""
         return fetch_from_multiple_obs_keys(
-            self.adata, obs_keys, attr_names, one_hot
+            self.adata, obs_keys, attr_names, one_hot, self.category_vocabularies
         )
 
     def grouped_adata(
@@ -267,6 +279,7 @@ class Fetch:
             one_hot,
             sampling_replacement=True,
             sampling_weights=sampling_weights,
+            category_vocabularies=self.category_vocabularies,
         )
 
     def update_obs_attrs(self, dataset, obs_data):
